@@ -1,93 +1,79 @@
 defmodule Compose.LLM do
-  require Logger
-
-  @endpoint "http://localhost:11434/api"
-  @model "llama3:latest"
-  @format "json"
   @stream false
-
-  # ask the AI to always quote itself
   @system """
   You help German nurses fill out forms.
 
-  You will receive a JSON object representing the form:
+  You will receive a JSON object containing two keys:
+  - patient_information: a string that describes the patient state and treatment.
+  - form: a JSON object that represents a form to be filled based on the `patient_information`,
 
-  # {Jason.encode!(ComposeWeb.PatientForm.schema())}
+  Your goal is to fill out the `form` based on `patient_information`:
+  1) Only reply in JSON format, using the `form` that was passed.
+  2) Any `string` field should be replied in German.
+  3) If no field is mentioned in the `patient_information`, you should reply with the default value for that field. Default values are:
+    - `nil` for `boolean` fields.
+    - `""` for `string` fields.
 
-  as well as free text that describes the patient state and treatment.
-
-  Your goal is to fill out the JSON based on the information from the free text.
-  - Only reply in JSON format, using the same JSON that was passed.
-  - Any `string` field should be replied in German.
-
-  For example, if the free text says:
-
-  ```text
-  Der Patient hat eine hochgradige Spastik aber ich konnte kein Hemiplegien und Paresen feststellen.
-  Er braucht voll Unterstützung bei Gehen, dadurch dass beide Beine nicht mehr bewegt werden können.
+  For example, if you receive:
+  ```json
+  {
+    "patient_information": "Der Patient hat eine hochgradige Spastik aber ich konnte kein Hemiplegien und Paresen feststellen. Er braucht voll Unterstützung bei Gehen, dadurch dass beide Beine nicht mehr bewegt werden können.",
+    "form": {
+      "severe_spasticity": "boolean",
+      "hemiplegia_and_paresis": "boolean",
+      "first_name": "string",
+      "last_name": "string",
+      "walking": ["complete_takeover", "partial_takeover", "independent"],
+      "mobility_note": "string"
+    }
+  }
   ```
 
   then return:
-
   ```json
   {
+    "first_name": "",
+    "last_name": "",
     "severe_spasticity": true,
     "hemiplegia_and_paresis": false,
     "walking": "complete_takeover",
-    "walking_quoted": "Er braucht voll Unterstützung bei Gehen.",
     "mobility_note": "Der Patient kann nicht mehr seine Beine bewegen."
   }
   ```
   """
-  @headers [{"content-type", "application/json"}]
-  @default_options receive_timeout: 1_000_000 * 60 * 60,
-                   pool_timeout: 1_000_000 * 60 * 60,
-                   request_timeout: 1_000_000 * 60 * 60
+  def generate!(%{} = body, opts \\ []) do
+    body = Map.merge(default_body(), body)
 
-  def generate!(%{} = body) do
-    body =
-      default_body()
-      |> Map.merge(body)
-      |> Jason.encode!()
+    backend = Keyword.get(opts, :backend, default_backend())
 
-    Logger.debug("input body: #{inspect(body)}")
+    model =
+      if body.model in backend.models() do
+        body.model
+      else
+        backend.default_model()
+      end
 
-    response =
-      :post
-      |> Finch.build(@endpoint <> "/generate", @headers, body)
-      |> Finch.request!(Compose.Finch, @default_options)
-
-    body =
-      response.body
-      |> Jason.decode!()
-      |> Map.get("response")
-      |> Jason.decode!()
-
-    Logger.debug("output body: #{inspect(body)}")
-
-    body
+    body = Map.put(body, :model, model)
+    backend.generate!(body)
   end
 
-  def tags do
-    response =
-      :get
-      |> Finch.build(@endpoint <> "/tags", @headers)
-      |> Finch.request!(Compose.Finch, @default_options)
-
-    body = Jason.decode!(response.body)
-
-    body
-    |> Map.get("models", [])
-    |> Enum.map(fn model -> model["name"] end)
-    |> Enum.sort()
+  def default_body do
+    %{system: @system, stream: @stream}
   end
 
-  defp default_body do
-    %{
-      model: @model,
-      system: @system,
-      format: @format,
-      stream: @stream
-    }
+  def module(name) when is_atom(name) do
+    name
+    |> Atom.to_string()
+    |> module()
   end
+
+  def module("openai") do
+    Compose.LLM.Backend.OpenAI
+  end
+
+  def module(name) when is_binary(name) do
+    String.to_existing_atom("Elixir.Compose.LLM.Backend.#{String.capitalize(name)}")
+  end
+
+  defp default_backend, do: Application.get_env(:compose, Compose.LLM)[:default_backend]
 end

@@ -13,18 +13,50 @@ defmodule ComposeWeb.PatientFormLive do
       end)
       |> assign_async(:response, fn -> {:ok, %{response: nil}} end)
       |> assign(patient_report: nil)
-      |> assign(models: Compose.LLM.tags())
-      |> assign(model: "llama3:latest")
+      |> assign_backend_config()
 
     {:ok, socket}
+  end
+
+  defp assign_backend_config(socket) do
+    backends = backends()
+
+    {_label, backend} =
+      Enum.find(backends, fn {_label, module} ->
+        module == Application.get_env(:compose, Compose.LLM)[:default_backend]
+      end)
+
+    models = backend.models()
+    model = backend.default_model()
+
+    socket
+    |> assign(backends: backends)
+    |> assign(backend: backend)
+    |> assign(models: models)
+    |> assign(model: model)
+  end
+
+  defp backends do
+    Application.get_env(:compose, Compose.LLM)
+    |> Keyword.get(:backends, [])
+    |> Enum.sort()
+    |> Enum.map(fn {backend, _} ->
+      backend = Compose.LLM.module(backend)
+      {backend.name, backend}
+    end)
   end
 
   @impl LiveView
   def render(assigns) do
     ~H"""
-    <div class="flex flex-col gap-1">
+    <div class="flex flex-col gap-2">
       <div class="flex flex-row gap-20 justify-center">
-        <.form for={%{}} phx-submit="submit_patient_report" class="flex flex-col gap-8">
+        <.form
+          for={%{}}
+          phx-change="change_patient_report"
+          phx-submit="submit_patient_report"
+          class="flex flex-col gap-8"
+        >
           <div class="flex flex-col gap-2">
             <.input
               type="textarea"
@@ -33,6 +65,7 @@ defmodule ComposeWeb.PatientFormLive do
               label="Schreib hier den Text, der die Patienteninformationen enthält."
               class="h-60"
             />
+            <.input type="select" name="backend" label="Backend" value={@backend} options={@backends} />
             <.input type="select" name="model" label="Model" value={@model} options={@models} />
           </div>
           <.button :if={!@response.loading}>Senden</.button>
@@ -45,110 +78,96 @@ defmodule ComposeWeb.PatientFormLive do
           </div>
         </.form>
 
-        <.form :let={f} for={@changeset.result} phx-submit="submit" class="flex flex-col gap-8">
+        <.form :let={f} for={@changeset.result} class="flex flex-col gap-8" as={:patient_form}>
           <section class="flex flex-col gap-8">
             <h1>Patienteninformation</h1>
-            <ul class="flex flex-col gap-2">
-              <li>
-                <.input type="text" field={f[:first_name]} label="Vorname" />
-              </li>
-              <li>
-                <.input type="text" field={f[:last_name]} label="Nachname" />
-              </li>
-            </ul>
+            <.inputs_for
+              :let={information}
+              field={f[:personal_information]}
+              as={:personal_information}
+            >
+              <div class="flex flex-col gap-2">
+                <.input type="text" field={information[:first_name]} label="Vorname" />
+                <.input type="text" field={information[:last_name]} label="Nachname" />
+              </div>
+            </.inputs_for>
           </section>
           <section class="flex flex-col gap-8">
             <h1>Besondere Pflegeprobleme</h1>
-            <ul class="flex flex-col gap-2">
-              <li>
-                <.input type="checkbox" field={f[:severe_spasticity]} label="Hochgradige Spastik" />
-              </li>
-              <li>
+            <.inputs_for :let={special_care} field={f[:special_care]} as={:sepcial_care}>
+              <div class="flex flex-col gap-2">
                 <.input
                   type="checkbox"
-                  field={f[:hemiplegia_and_paresis]}
+                  field={special_care[:severe_spasticity]}
+                  label="Hochgradige Spastik"
+                />
+                <.input
+                  type="checkbox"
+                  field={special_care[:hemiplegia_and_paresis]}
                   label="Hemiplegien und Paresen"
                 />
-              </li>
-              <li>
                 <.input
                   type="checkbox"
-                  field={f[:malposition_of_the_extremity]}
+                  field={special_care[:malposition_of_the_extremity]}
                   label="Fehlhaltung der Extremität"
                 />
-              </li>
-              <li>
                 <.input
                   type="checkbox"
-                  field={f[:limited_resilience_due_to_cardiovascular_diseases]}
+                  field={special_care[:limited_resilience_due_to_cardiovascular_diseases]}
                   label="Eingeschränkte Belastbarkeit aufgrund von Herz-Kreislauf-Erkrankungen"
                 />
-              </li>
-              <li>
                 <.input
                   type="checkbox"
-                  field={f[:behavioral_problems_with_mental_illness_and_dementia]}
+                  field={special_care[:behavioral_problems_with_mental_illness_and_dementia]}
                   label="Verhaltensauffälligkeiten bei psychischen Erkrankungen und Demenz"
                 />
-              </li>
-              <li>
                 <.input
                   type="checkbox"
-                  field={f[:impaired_sensory_perception]}
+                  field={special_care[:impaired_sensory_perception]}
                   label="Eingeschränkte Sinneswahrnehmung"
                 />
-              </li>
-              <li>
                 <.input
                   type="checkbox"
-                  field={f[:therapy_resistant_pain]}
+                  field={special_care[:therapy_resistant_pain]}
                   label="Therapieresistenter Schmerz"
                 />
-              </li>
-              <li>
                 <.input
                   type="checkbox"
-                  field={f[:increased_need_for_care_due_to_body_weight]}
+                  field={special_care[:increased_need_for_care_due_to_body_weight]}
                   label="Erhöhter Pflegebedarf durch Körpergewicht"
                 />
-              </li>
-              <li>
-                <.input type="checkbox" field={f[:weight_bmi]} label="Gewicht/BMI" />
-              </li>
-            </ul>
+                <.input type="checkbox" field={special_care[:weight_bmi]} label="Gewicht/BMI" />
+              </div>
+            </.inputs_for>
           </section>
           <section class="flex flex-col gap-8">
             <h1>Mobilität</h1>
-            <ul class="flex flex-col gap-4">
-              <li>
+            <.inputs_for :let={mobility} field={f[:mobility]} as={:mobility}>
+              <div class="flex flex-col gap-4">
                 <.input
                   type="select"
-                  field={f[:walking]}
+                  field={mobility[:walking]}
                   label="Gehen"
                   prompt="Wähle eine Option"
-                  options={ComposeWeb.PatientForm.mobility_values_options()}
+                  options={ComposeWeb.PatientForm.Mobility.mobility_values_options()}
                 />
-              </li>
-              <li>
                 <.input
                   type="text"
-                  field={f[:mobility_note]}
+                  field={mobility[:mobility_note]}
                   label="Bemerkung"
                   placeholder="(z. B. Bewegungsplan)"
                 />
-              </li>
-            </ul>
+              </div>
+            </.inputs_for>
           </section>
-          <section class="flex flex-col gap-8">
-            <ul class="flex flex-col gap-4">
-              <li>
-                <.input type="text" field={f[:date]} value={Date.utc_today()} label="Datum" />
-              </li>
-              <li>
-                <.input type="text" field={f[:signature]} label="Signature" />
-              </li>
-            </ul>
-          </section>
+          <%!-- <section class="flex flex-col gap-8">
+            <.inputs_for :let={signature} field={f[:signature]} as={:signature}>
+              <div class="flex flex-col gap-4">
+                <.input type="text" field={signature[:date]} value={Date.utc_today()} label="Datum" />
+                <.input type="text" field={signature[:signature]} label="Signature" />
+              </div>
+            </.inputs_for>
+          </section> --%>
           <%!-- <.button>Speichern</.button> --%>
         </.form>
       </div>
@@ -157,23 +176,48 @@ defmodule ComposeWeb.PatientFormLive do
   end
 
   @impl LiveView
+  def handle_event("change_patient_report", %{"backend" => backend, "model" => model}, socket) do
+    backend = String.to_existing_atom(backend)
+
+    socket =
+      socket
+      |> assign(backend: backend)
+      |> assign(models: backend.models())
+      |> assign(model: (model in backend.models() && model) || backend.default_model())
+
+    {:noreply, socket}
+  end
+
   def handle_event("submit_patient_report", params, socket) do
-    prompt = """
-    Please, fill out the following JSON form:
-    #{Jason.encode!(%ComposeWeb.PatientForm{})}
-
-    Using the following information about the patient:
-
-    ```text
-    #{params["patient_report"]}
-    ```
-    """
-
-    model = params["model"]
+    backend = socket.assigns.backend
+    model = socket.assigns.model
+    patient_report = params["patient_report"]
 
     socket =
       assign_async(socket, [:response, :changeset], fn ->
-        response = Compose.LLM.generate!(%{prompt: prompt, model: model})
+        # response =
+        #   PatientForm.schema()
+        #   |> Map.keys()
+        #   |> Map.new(fn section ->
+        #     encoded_schema =
+        #       PatientForm.schema()
+        #       |> Map.get(section)
+        #       |> Jason.encode!()
+
+        #     prompt = Jason.encode!(%{patient_information: patient_report, form: encoded_schema})
+
+        #     {Atom.to_string(section), Compose.LLM.generate!(%{prompt: prompt, model: model})}
+        #   end)
+
+        prompt =
+          Jason.encode!(%{
+            patient_information: patient_report,
+            form: Jason.encode!(PatientForm.schema())
+          })
+
+        IO.inspect(prompt)
+
+        response = Compose.LLM.generate!(%{prompt: prompt, model: model}, backend: backend)
         changeset = ComposeWeb.PatientForm.changeset(%ComposeWeb.PatientForm{}, response)
         {:ok, %{response: response, changeset: changeset}}
       end)

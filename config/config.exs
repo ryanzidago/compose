@@ -61,6 +61,44 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+config :compose, Compose.LLM,
+  default_backend: Compose.LLM.Backend.Ollama,
+  backends: [
+    ollama: [
+      base_url: "http://localhost:11434",
+      model: "llama3:latest",
+      stream: false,
+      format: "json"
+    ],
+    perplexity: [
+      base_url: "https://api.perplexity.ai",
+      model: "mixtral-8x7b-instruct",
+      stream: false,
+      # JSON format not yet supported
+      # format: %{"type" => "json_object"},
+      api_key: System.get_env("PERPLEXITY_API_KEY")
+    ],
+    openai: [
+      base_url: "https://api.openai.com",
+      model: "gpt-4o",
+      stream: false,
+      format: %{"type" => "json_object"},
+      api_key: System.get_env("OPENAI_API_KEY")
+    ],
+    mistral: [
+      base_url: "https://api.mistral.ai",
+      model: "mistral-small-latest",
+      stream: false,
+      format: %{"type" => "json_object"},
+      api_key: System.get_env("MISTRAL_API_KEY")
+    ]
+  ]
+
+config :finch, :opts,
+  receive_timeout: 1_000_000 * 60 * 60,
+  pool_timeout: 1_000_000 * 60 * 60,
+  request_timeout: 1_000_000 * 60 * 60
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"
