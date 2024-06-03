@@ -11,7 +11,7 @@ defmodule ComposeWeb.PatientFormLive do
     socket =
       socket
       |> assign_async(:changeset, fn ->
-        {:ok, %{changeset: PatientForm.changeset(%PatientForm{})}}
+        {:ok, %{changeset: PatientForm.changeset(%{})}}
       end)
       |> assign_async(:response, fn -> {:ok, %{response: nil}} end)
       |> assign(patient_report: nil)
@@ -260,10 +260,11 @@ defmodule ComposeWeb.PatientFormLive do
             form: Jason.encode!(PatientForm.schema())
           })
 
-        IO.inspect(prompt)
-
         response = Compose.LLM.generate!(%{prompt: prompt, model: model}, backend: backend)
         changeset = ComposeWeb.PatientForm.changeset(%ComposeWeb.PatientForm{}, response)
+
+        IO.inspect(changeset)
+
         {:ok, %{response: response, changeset: changeset}}
       end)
 

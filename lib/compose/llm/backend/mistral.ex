@@ -35,16 +35,27 @@ defmodule Compose.LLM.Backend.Mistral do
   end
 
   def models do
-    ~w(
-      open-mistral-7b
-      open-mixtral-8x7b
-      open-mixtral-8x22b
-      mistral-small-latest
-      mistral-medium-latest
-      mistral-large-latest
-      mistral-embed
-      codestral-latest
-    )
+    # ~w(
+    #   open-mistral-7b
+    #   open-mixtral-8x7b
+    #   open-mixtral-8x22b
+    #   mistral-small-latest
+    #   mistral-medium-latest
+    #   mistral-large-latest
+    #   mistral-embed
+    #   codestral-latest
+    # )
+    # |> Enum.sort()
+
+    response =
+      :get
+      |> Finch.build(config()[:base_url] <> "/v1/models", headers())
+      |> Finch.request!(Compose.Finch, default_finch_opts())
+
+    response.body
+    |> Jason.decode!()
+    |> Map.get("data", [])
+    |> Enum.map(& &1["id"])
     |> Enum.sort()
   end
 

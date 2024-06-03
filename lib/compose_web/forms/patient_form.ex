@@ -16,7 +16,11 @@ defmodule ComposeWeb.PatientForm do
     # embeds_one :signature, Signature
   end
 
-  def changeset(%__MODULE__{} = patient_form, attrs \\ %{}) do
+  def changeset(%{} = attrs) do
+    changeset(%__MODULE__{}, attrs)
+  end
+
+  def changeset(%__MODULE__{} = patient_form, attrs) do
     patient_form
     |> cast(attrs, __MODULE__.__schema__(:fields) -- __MODULE__.__schema__(:embeds))
     |> cast_embed(:personal_information, with: &PersonalInformation.changeset/2)

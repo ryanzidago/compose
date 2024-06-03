@@ -11,7 +11,7 @@ defmodule Compose.LLM do
   1) Only reply in JSON format, using the `form` that was passed.
   2) Any `string` field should be replied in the given locale.
   3) If no field is mentioned in the `patient_information`, you should reply with the default value for that field. Default values are:
-    - `nil` for `boolean` fields.
+    - `false` for `boolean` fields.
     - `""` for `string` fields.
 
   For example, if you receive:
