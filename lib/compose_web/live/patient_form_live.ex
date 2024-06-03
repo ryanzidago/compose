@@ -5,7 +5,9 @@ defmodule ComposeWeb.PatientFormLive do
   alias Phoenix.LiveView
 
   @impl LiveView
-  def mount(_params, _session, socket) do
+  def mount(%{"locale" => locale}, _session, socket) do
+    Gettext.put_locale(locale)
+
     socket =
       socket
       |> assign_async(:changeset, fn ->
@@ -14,6 +16,8 @@ defmodule ComposeWeb.PatientFormLive do
       |> assign_async(:response, fn -> {:ok, %{response: nil}} end)
       |> assign(patient_report: nil)
       |> assign_backend_config()
+      |> assign(locales: ~w(en de_DE))
+      |> assign(locale: locale)
 
     {:ok, socket}
   end
@@ -49,20 +53,35 @@ defmodule ComposeWeb.PatientFormLive do
   @impl LiveView
   def render(assigns) do
     ~H"""
-    <div class="flex flex-col gap-2">
-      <div class="flex flex-row gap-20 justify-center">
+    <div class="flex flex-col">
+      <div class="grid grid-cols-6 gap-20">
+        <div class="col-span-1">
+          <div class="w-24">
+            <.form for={%{}} phx-change="change_locale" as={:locale}>
+              <.input
+                type="select"
+                name="locale"
+                label={dgettext("patient_form", "Locale")}
+                value={@locale}
+                options={@locales}
+              />
+            </.form>
+          </div>
+        </div>
         <.form
           for={%{}}
           phx-change="change_patient_report"
           phx-submit="submit_patient_report"
-          class="flex flex-col gap-8"
+          class="col-span-2 flex flex-col gap-8"
         >
           <div class="flex flex-col gap-2">
             <.input
               type="textarea"
               value={@patient_report}
               name="patient_report"
-              label="Schreib hier den Text, der die Patienteninformationen enthält."
+              label={
+                dgettext("patient_form", "Write the text that contains the patient information here.")
+              }
               class="h-60"
             />
             <.input type="select" name="backend" label="Backend" value={@backend} options={@backends} />
@@ -78,84 +97,108 @@ defmodule ComposeWeb.PatientFormLive do
           </div>
         </.form>
 
-        <.form :let={f} for={@changeset.result} class="flex flex-col gap-8" as={:patient_form}>
+        <.form
+          :let={f}
+          for={@changeset.result}
+          class="col-span-2 flex flex-col gap-8"
+          as={:patient_form}
+        >
           <section class="flex flex-col gap-8">
-            <h1>Patienteninformation</h1>
+            <h1><%= dgettext("patient_form", "Patient information") %></h1>
             <.inputs_for
               :let={information}
               field={f[:personal_information]}
               as={:personal_information}
             >
               <div class="flex flex-col gap-2">
-                <.input type="text" field={information[:first_name]} label="Vorname" />
-                <.input type="text" field={information[:last_name]} label="Nachname" />
+                <.input
+                  type="text"
+                  field={information[:first_name]}
+                  label={dgettext("patient_form", "First name")}
+                />
+                <.input
+                  type="text"
+                  field={information[:last_name]}
+                  label={dgettext("patient_form", "Last name")}
+                />
               </div>
             </.inputs_for>
           </section>
           <section class="flex flex-col gap-8">
-            <h1>Besondere Pflegeprobleme</h1>
+            <h1><%= dgettext("patient_form", "Special care problems") %></h1>
             <.inputs_for :let={special_care} field={f[:special_care]} as={:sepcial_care}>
               <div class="flex flex-col gap-2">
                 <.input
                   type="checkbox"
                   field={special_care[:severe_spasticity]}
-                  label="Hochgradige Spastik"
+                  label={dgettext("patient_form", "Severe Spasticity")}
                 />
                 <.input
                   type="checkbox"
                   field={special_care[:hemiplegia_and_paresis]}
-                  label="Hemiplegien und Paresen"
+                  label={dgettext("patient_form", "Hemiplegia and Paresis")}
                 />
                 <.input
                   type="checkbox"
                   field={special_care[:malposition_of_the_extremity]}
-                  label="Fehlhaltung der Extremität"
+                  label={dgettext("patient_form", "Malposition of the extremity")}
                 />
                 <.input
                   type="checkbox"
                   field={special_care[:limited_resilience_due_to_cardiovascular_diseases]}
-                  label="Eingeschränkte Belastbarkeit aufgrund von Herz-Kreislauf-Erkrankungen"
+                  label={
+                    dgettext("patient_form", "Limited resilience due to cardiovascular diseases")
+                  }
                 />
                 <.input
                   type="checkbox"
                   field={special_care[:behavioral_problems_with_mental_illness_and_dementia]}
-                  label="Verhaltensauffälligkeiten bei psychischen Erkrankungen und Demenz"
+                  label={
+                    dgettext(
+                      "patient_form",
+                      "Behavioral problems with mental illness and dementia"
+                    )
+                  }
                 />
                 <.input
                   type="checkbox"
                   field={special_care[:impaired_sensory_perception]}
-                  label="Eingeschränkte Sinneswahrnehmung"
+                  label={dgettext("patient_form", "Impaired sensory perception")}
                 />
                 <.input
                   type="checkbox"
                   field={special_care[:therapy_resistant_pain]}
-                  label="Therapieresistenter Schmerz"
+                  label={dgettext("patient_form", "Therapy-resistant pain")}
                 />
                 <.input
                   type="checkbox"
                   field={special_care[:increased_need_for_care_due_to_body_weight]}
-                  label="Erhöhter Pflegebedarf durch Körpergewicht"
+                  label={dgettext("patient_form", "Increased need for care due to body weight")}
                 />
-                <.input type="checkbox" field={special_care[:weight_bmi]} label="Gewicht/BMI" />
+                <.input
+                  type="checkbox"
+                  field={special_care[:weight_bmi]}
+                  label={dgettext("patient_form", "Weight/BMI")}
+                />
               </div>
             </.inputs_for>
           </section>
           <section class="flex flex-col gap-8">
-            <h1>Mobilität</h1>
+            <h1><%= dgettext("patient_form", "Mobility") %></h1>
             <.inputs_for :let={mobility} field={f[:mobility]} as={:mobility}>
               <div class="flex flex-col gap-4">
                 <.input
                   type="select"
                   field={mobility[:walking]}
-                  label="Gehen"
-                  prompt="Wähle eine Option"
+                  label={dgettext("patient_form", "Walking")}
+                  prompt={dgettext("patient_form", "Select an option")}
                   options={ComposeWeb.PatientForm.Mobility.mobility_values_options()}
                 />
                 <.input
                   type="text"
                   field={mobility[:mobility_note]}
-                  label="Bemerkung"
-                  placeholder="(z. B. Bewegungsplan)"
+                  label={dgettext("patient_form", "Remark")}
+                  placeholder={dgettext("patient_form", "(e.g. Movement plan)")}
                 />
               </div>
             </.inputs_for>
@@ -170,6 +213,7 @@ defmodule ComposeWeb.PatientFormLive do
           </section> --%>
           <%!-- <.button>Speichern</.button> --%>
         </.form>
+        <div class="col-span-1" />
       </div>
     </div>
     """
@@ -211,6 +255,7 @@ defmodule ComposeWeb.PatientFormLive do
 
         prompt =
           Jason.encode!(%{
+            locale: Gettext.get_locale(),
             patient_information: patient_report,
             form: Jason.encode!(PatientForm.schema())
           })
@@ -227,5 +272,10 @@ defmodule ComposeWeb.PatientFormLive do
 
   def handle_event("submit", _params, socket) do
     {:noreply, socket}
+  end
+
+  def handle_event("change_locale", params, socket) do
+    locale = params["locale"]
+    {:noreply, redirect(socket, to: "/#{locale}/form")}
   end
 end

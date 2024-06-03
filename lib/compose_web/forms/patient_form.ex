@@ -4,7 +4,6 @@ defmodule ComposeWeb.PatientForm do
   alias ComposeWeb.PatientForm.PersonalInformation
   alias ComposeWeb.PatientForm.SpecialCare
   alias ComposeWeb.PatientForm.Mobility
-  alias ComposeWeb.PatientForm.Signature
 
   import Ecto.Changeset
 

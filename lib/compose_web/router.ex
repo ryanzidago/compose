@@ -14,7 +14,7 @@ defmodule ComposeWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", ComposeWeb do
+  scope "/:locale", ComposeWeb do
     pipe_through :browser
 
     get "/", PageController, :home

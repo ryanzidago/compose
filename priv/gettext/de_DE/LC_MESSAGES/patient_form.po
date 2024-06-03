@@ -1,0 +1,99 @@
+#: lib/compose_web/live/patient_form_live.ex:81
+#, elixir-autogen, elixir-format
+msgid "Write the text that contains the patient information here."
+msgstr "Schreib hier den Text, der die Patienteninformationen enthält."
+
+#: lib/compose_web/live/patient_form_live.ex:150
+#, elixir-autogen, elixir-format
+msgid "Behavioral problems with mental illness and dementia"
+msgstr "Verhaltensauffälligkeiten bei psychischen Erkrankungen und Demenz"
+
+#: lib/compose_web/live/patient_form_live.ex:132
+#, elixir-autogen, elixir-format
+msgid "Hemiplegia and Paresis"
+msgstr "Hemiplegien und Paresen"
+
+#: lib/compose_web/live/patient_form_live.ex:159
+#, elixir-autogen, elixir-format
+msgid "Impaired sensory perception"
+msgstr "Eingeschränkte Sinneswahrnehmung"
+
+#: lib/compose_web/live/patient_form_live.ex:169
+#, elixir-autogen, elixir-format
+msgid "Increased need for care due to body weight"
+msgstr "Erhöhter Pflegebedarf durch Körpergewicht"
+
+#: lib/compose_web/live/patient_form_live.ex:143
+#, elixir-autogen, elixir-format
+msgid "Limited resilience due to cardiovascular diseases"
+msgstr "Eingeschränkte Belastbarkeit aufgrund von Herz-Kreislauf-Erkrankungen"
+
+#: lib/compose_web/live/patient_form_live.ex:137
+#, elixir-autogen, elixir-format
+msgid "Malposition of the extremity"
+msgstr "Fehlhaltung der Extremität"
+
+#: lib/compose_web/live/patient_form_live.ex:187
+#, elixir-autogen, elixir-format
+msgid "Select an option"
+msgstr "Wähle eine Option"
+
+#: lib/compose_web/live/patient_form_live.ex:127
+#, elixir-autogen, elixir-format
+msgid "Severe Spasticity"
+msgstr "Hochgradige Spastik"
+
+#: lib/compose_web/live/patient_form_live.ex:164
+#, elixir-autogen, elixir-format
+msgid "Therapy-resistant pain"
+msgstr "Therapieresistenter Schmerz"
+
+#: lib/compose_web/live/patient_form_live.ex:186
+#, elixir-autogen, elixir-format
+msgid "Walking"
+msgstr "Gehen"
+
+#: lib/compose_web/live/patient_form_live.ex:174
+#, elixir-autogen, elixir-format
+msgid "Weight/BMI"
+msgstr "Gewicht/BMI"
+
+#: lib/compose_web/live/patient_form_live.ex:180
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Mobility"
+msgstr "Mobilität"
+
+#: lib/compose_web/live/patient_form_live.ex:121
+#, elixir-autogen, elixir-format
+msgid "Special care problems"
+msgstr "Besondere Pflegeprobleme"
+
+#: lib/compose_web/live/patient_form_live.ex:110
+#, elixir-autogen, elixir-format
+msgid "First name"
+msgstr "Vorname"
+
+#: lib/compose_web/live/patient_form_live.ex:115
+#, elixir-autogen, elixir-format
+msgid "Last name"
+msgstr "Nachname"
+
+#: lib/compose_web/live/patient_form_live.ex:100
+#, elixir-autogen, elixir-format
+msgid "Patient information"
+msgstr "Patienteninformation"
+
+#: lib/compose_web/live/patient_form_live.ex:193
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Remark"
+msgstr "Bemerkung"
+
+#: lib/compose_web/live/patient_form_live.ex:194
+#, elixir-autogen, elixir-format, fuzzy
+msgid "(e.g. Movement plan)"
+msgstr "(z. B. Bewegungsplan)"
+
+#: lib/compose_web/live/patient_form_live.ex:62
+#, elixir-autogen, elixir-format
+msgid "Locale"
+msgstr ""

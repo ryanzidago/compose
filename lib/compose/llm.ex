@@ -1,7 +1,7 @@
 defmodule Compose.LLM do
   @stream false
   @system """
-  You help German nurses fill out forms.
+  You help nurses fill out forms.
 
   You will receive a JSON object containing two keys:
   - patient_information: a string that describes the patient state and treatment.
@@ -9,7 +9,7 @@ defmodule Compose.LLM do
 
   Your goal is to fill out the `form` based on `patient_information`:
   1) Only reply in JSON format, using the `form` that was passed.
-  2) Any `string` field should be replied in German.
+  2) Any `string` field should be replied in the given locale.
   3) If no field is mentioned in the `patient_information`, you should reply with the default value for that field. Default values are:
     - `nil` for `boolean` fields.
     - `""` for `string` fields.
@@ -17,6 +17,7 @@ defmodule Compose.LLM do
   For example, if you receive:
   ```json
   {
+    "local": "de_DE",
     "patient_information": "Der Patient hat eine hochgradige Spastik aber ich konnte kein Hemiplegien und Paresen feststellen. Er braucht voll Unterstützung bei Gehen, dadurch dass beide Beine nicht mehr bewegt werden können.",
     "form": {
       "severe_spasticity": "boolean",
