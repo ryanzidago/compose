@@ -1,35 +1,51 @@
 defmodule Compose.LLM.Backend.OpenAI do
-  def generate!(%{} = body) do
-    body =
-      default_body()
-      |> Map.merge(%{
-        messages: [
-          %{
-            role: "system",
-            content: body.system
-          },
-          %{
-            role: "user",
-            content: body.prompt
-          }
-        ]
-      })
-      |> Jason.encode!()
+  def generate(%{} = body) do
+    with {:ok, body} <- build_body(body),
+         {:ok, response} <- request(body),
+         {:ok, body} <- decode_response(response) do
+      {:ok, body}
+    else
+      {:error, reason} -> {:error, reason}
+    end
+  end
 
-    response =
-      :post
-      |> Finch.build(config()[:base_url] <> "/v1/chat/completions", headers(), body)
-      |> Finch.request!(Compose.Finch, default_finch_opts())
+  defp build_body(body) do
+    body = %{
+      model: body.model,
+      stream: false,
+      response_format: %{"type" => "json_object"},
+      messages: [
+        %{
+          role: "system",
+          content: body.system
+        },
+        %{
+          role: "user",
+          content: body.input
+        }
+      ]
+    }
 
-    body =
-      response.body
-      |> Jason.decode!()
-      |> Map.get("choices")
-      |> List.first()
-      |> get_in(~w(message content))
-      |> Jason.decode!()
+    Jason.encode(body)
+  end
 
-    body
+  defp request(body) do
+    :post
+    |> Finch.build(config()[:base_url] <> "/v1/chat/completions", headers(), body)
+    |> Finch.request(Compose.Finch, default_finch_opts())
+  end
+
+  defp decode_response(response) do
+    with {:ok, body} <- Jason.decode(response.body),
+         {:ok, [choice | _]} <- Map.fetch(body, "choices"),
+         {:ok, message} <- Map.fetch(choice, "message"),
+         {:ok, content} <- Map.fetch(message, "content"),
+         {:ok, content} <- Jason.decode(content) do
+      {:ok, content}
+    else
+      :error -> {:error, "Failed to decode response"}
+      {:error, reason} -> {:error, reason}
+    end
   end
 
   def default_model do

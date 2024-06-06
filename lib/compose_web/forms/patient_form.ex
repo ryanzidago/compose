@@ -49,4 +49,9 @@ defmodule ComposeWeb.PatientForm do
         type
     end
   end
+
+  def related(section) do
+    {:parameterized, Ecto.Embedded, params} = __MODULE__.__schema__(:type, section)
+    params.related
+  end
 end

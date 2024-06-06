@@ -1,24 +1,46 @@
 defmodule Compose.LLM.Backend.Ollama do
   require Logger
 
-  def generate!(%{} = body) do
+  def generate(%{} = body) do
+    with {:ok, body} <- build_body(body),
+         {:ok, response} <- request(body),
+         {:ok, body} <- decode_response(response) do
+      {:ok, body}
+    else
+      {:error, reason} -> {:error, reason}
+    end
+  end
+
+  defp build_body(%{} = body) do
     body =
-      default_body()
-      |> Map.merge(body)
-      |> Jason.encode!()
+      %{
+        model: body.model,
+        stream: false,
+        format: "json",
+        system: body.system,
+        prompt: body.input
+      }
 
-    response =
-      :post
-      |> Finch.build(config()[:base_url] <> "/api/generate", headers(), body)
-      |> Finch.request!(Compose.Finch, default_finch_opts())
+    Logger.debug(body)
 
-    body =
-      response.body
-      |> Jason.decode!()
-      |> Map.get("response")
-      |> Jason.decode!()
+    Jason.encode(body)
+  end
 
-    body
+  defp request(body) do
+    :post
+    |> Finch.build(config()[:base_url] <> "/api/generate", headers(), body)
+    |> Finch.request(Compose.Finch, default_finch_opts())
+  end
+
+  defp decode_response(response) do
+    with {:ok, body} <- Jason.decode(response.body),
+         {:ok, response} <- Map.fetch(body, "response"),
+         {:ok, response} <- Jason.decode(response) do
+      {:ok, response}
+    else
+      :error -> {:error, "Failed to decode response"}
+      {:error, reason} -> {:error, reason}
+    end
   end
 
   def models do

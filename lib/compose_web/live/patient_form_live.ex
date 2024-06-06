@@ -4,6 +4,12 @@ defmodule ComposeWeb.PatientFormLive do
   alias ComposeWeb.PatientForm
   alias Phoenix.LiveView
 
+  @prompt_modes [
+    :per_form,
+    :per_section,
+    :per_field
+  ]
+
   @impl LiveView
   def mount(%{"locale" => locale}, _session, socket) do
     Gettext.put_locale(locale)
@@ -18,6 +24,8 @@ defmodule ComposeWeb.PatientFormLive do
       |> assign_backend_config()
       |> assign(locales: ~w(en de_DE))
       |> assign(locale: locale)
+      |> assign(prompt_modes: @prompt_modes)
+      |> assign(prompt_mode: :per_form)
 
     {:ok, socket}
   end
@@ -86,13 +94,20 @@ defmodule ComposeWeb.PatientFormLive do
             />
             <.input type="select" name="backend" label="Backend" value={@backend} options={@backends} />
             <.input type="select" name="model" label="Model" value={@model} options={@models} />
+            <.input
+              type="select"
+              name="prompt_mode"
+              label="Prompt Mode"
+              value={@prompt_mode}
+              options={@prompt_modes}
+            />
           </div>
           <.button :if={!@response.loading}>Senden</.button>
           <.button :if={@response.loading} class="opacity-80 cursor-progress">
             Lädt...
           </.button>
           <div :if={@response.result} class="text-xs w-96 overflow-x-auto">
-            <h2>Antwort:</h2>
+            <h2><%= dgettext("patient_form", "Response") %></h2>
             <pre class="w-90"><%= Jason.encode!(@response.result || "", pretty: true) %></pre>
           </div>
         </.form>
@@ -220,14 +235,24 @@ defmodule ComposeWeb.PatientFormLive do
   end
 
   @impl LiveView
-  def handle_event("change_patient_report", %{"backend" => backend, "model" => model}, socket) do
+  def handle_event(
+        "change_patient_report",
+        %{
+          "backend" => backend,
+          "model" => model,
+          "prompt_mode" => prompt_mode
+        } = _params,
+        socket
+      ) do
     backend = String.to_existing_atom(backend)
+    prompt_mode = String.to_existing_atom(prompt_mode)
 
     socket =
       socket
       |> assign(backend: backend)
       |> assign(models: backend.models())
       |> assign(model: (model in backend.models() && model) || backend.default_model())
+      |> assign(prompt_mode: (prompt_mode in @prompt_modes && prompt_mode) || :per_form)
 
     {:noreply, socket}
   end
@@ -235,37 +260,16 @@ defmodule ComposeWeb.PatientFormLive do
   def handle_event("submit_patient_report", params, socket) do
     backend = socket.assigns.backend
     model = socket.assigns.model
+    prompt_mode = socket.assigns.prompt_mode
+    locale = socket.assigns.locale
     patient_report = params["patient_report"]
 
     socket =
       assign_async(socket, [:response, :changeset], fn ->
-        # response =
-        #   PatientForm.schema()
-        #   |> Map.keys()
-        #   |> Map.new(fn section ->
-        #     encoded_schema =
-        #       PatientForm.schema()
-        #       |> Map.get(section)
-        #       |> Jason.encode!()
-
-        #     prompt = Jason.encode!(%{patient_information: patient_report, form: encoded_schema})
-
-        #     {Atom.to_string(section), Compose.LLM.generate!(%{prompt: prompt, model: model})}
-        #   end)
-
-        prompt =
-          Jason.encode!(%{
-            locale: Gettext.get_locale(),
-            patient_information: patient_report,
-            form: Jason.encode!(PatientForm.schema())
-          })
-
-        response = Compose.LLM.generate!(%{prompt: prompt, model: model}, backend: backend)
-        changeset = ComposeWeb.PatientForm.changeset(%ComposeWeb.PatientForm{}, response)
-
-        IO.inspect(changeset)
-
-        {:ok, %{response: response, changeset: changeset}}
+        generate(
+          %{backend: backend, model: model, patient_report: patient_report, locale: locale},
+          prompt_mode
+        )
       end)
 
     {:noreply, socket}
@@ -277,6 +281,112 @@ defmodule ComposeWeb.PatientFormLive do
 
   def handle_event("change_locale", params, socket) do
     locale = params["locale"]
-    {:noreply, redirect(socket, to: "/#{locale}/form")}
+    {:noreply, redirect(socket, to: ~p"/#{locale}/form")}
+  end
+
+  defp generate(%{} = params, _prompt_mode = :per_form) do
+    system = PatientForm.Prompt.base_prompt()
+
+    input =
+      Jason.encode!(%{
+        locale: params.locale,
+        patient_information: params.patient_report,
+        form: Jason.encode!(PatientForm.schema())
+      })
+
+    {:ok, response} =
+      Compose.LLM.generate(%{
+        system: system,
+        input: input,
+        backend: params.backend,
+        model: params.model
+      })
+
+    changeset = ComposeWeb.PatientForm.changeset(%ComposeWeb.PatientForm{}, response)
+
+    {:ok, %{response: response, changeset: changeset}}
+  end
+
+  defp generate(params, _prompt_mode = :per_section) do
+    response =
+      PatientForm.schema()
+      |> Map.keys()
+      |> Enum.filter(&(&1 in [:personal_information, :special_care]))
+      |> Map.new(fn section ->
+        encoded_schema =
+          PatientForm.schema()
+          |> Map.get(section)
+          |> Jason.encode!()
+
+        system = ComposeWeb.PatientForm.related(section).prompt(section)
+
+        input =
+          Jason.encode!(%{
+            locale: Gettext.get_locale(),
+            patient_information: params.patient_report,
+            form: encoded_schema
+          })
+
+        {:ok, response} =
+          Compose.LLM.generate(%{
+            system: system,
+            input: input,
+            backend: params.backend,
+            model: params.model
+          })
+
+        {Atom.to_string(section), response}
+      end)
+
+    changeset = ComposeWeb.PatientForm.changeset(%ComposeWeb.PatientForm{}, response)
+
+    {:ok, %{response: response, changeset: changeset}}
+  end
+
+  defp generate(params, _prompt_mode = :per_field) do
+    schema = ComposeWeb.PatientForm.schema()
+
+    response =
+      schema
+      |> Map.keys()
+      |> Map.new(fn section ->
+        fields = Map.get(schema, section)
+
+        response =
+          Enum.reduce(fields, %{}, fn {field, type}, acc ->
+            system = ComposeWeb.PatientForm.related(section).prompt(section, field)
+
+            input =
+              Jason.encode!(%{
+                locale: Gettext.get_locale(),
+                patient_information: params.patient_report,
+                form: Jason.encode!(%{field => type})
+              })
+
+            {:ok, response} =
+              Compose.LLM.generate(%{
+                system: system,
+                input: input,
+                backend: params.backend,
+                model: params.model
+              })
+
+            # flatten the response
+            #
+            # sometimes the response is within a `form` key
+            # response = if is_binary(response), do: Jason.decode!(response), else: response
+            # IO.inspect(response)
+            response = Map.get(response, "form", response)
+            response = if is_binary(response), do: Jason.decode!(response), else: response
+
+            Map.merge(acc, response)
+          end)
+
+        {Atom.to_string(section), response}
+      end)
+
+    changeset = ComposeWeb.PatientForm.changeset(%ComposeWeb.PatientForm{}, response)
+
+    {:ok, %{response: response, changeset: changeset}}
   end
 end

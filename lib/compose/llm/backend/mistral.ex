@@ -1,5 +1,15 @@
 defmodule Compose.LLM.Backend.Mistral do
-  def generate!(%{} = body) do
+  def generate(%{} = body) do
+    with {:ok, body} <- build_body(body),
+         {:ok, response} <- request(body),
+         {:ok, body} <- decode_response(response) do
+      {:ok, body}
+    else
+      {:error, reason} -> {:error, reason}
+    end
+  end
+
+  defp build_body(body) do
     body =
       %{
         model: body.model,
@@ -12,41 +22,34 @@ defmodule Compose.LLM.Backend.Mistral do
           },
           %{
             role: "user",
-            content: body.prompt
+            content: body.input
           }
         ]
       }
-      |> Jason.encode!()
 
-    response =
-      :post
-      |> Finch.build(config()[:base_url] <> "/v1/chat/completions", headers(), body)
-      |> Finch.request!(Compose.Finch, default_finch_opts())
+    Jason.encode(body)
+  end
 
-    body =
-      response.body
-      |> Jason.decode!()
-      |> Map.get("choices")
-      |> List.first()
-      |> get_in(~w(message content))
-      |> Jason.decode!()
+  defp request(body) do
+    :post
+    |> Finch.build(config()[:base_url] <> "/v1/chat/completions", headers(), body)
+    |> Finch.request(Compose.Finch, default_finch_opts())
+  end
 
-    body
+  defp decode_response(response) do
+    with {:ok, body} <- Jason.decode(response.body),
+         {:ok, [choice | _]} <- Map.fetch(body, "choices"),
+         {:ok, message} <- Map.fetch(choice, "message"),
+         {:ok, content} <- Map.fetch(message, "content"),
+         {:ok, content} <- Jason.decode(content) do
+      {:ok, content}
+    else
+      :error -> {:error, "Failed to decode response"}
+      {:error, reason} -> {:error, reason}
+    end
   end
 
   def models do
-    # ~w(
-    #   open-mistral-7b
-    #   open-mixtral-8x7b
-    #   open-mixtral-8x22b
-    #   mistral-small-latest
-    #   mistral-medium-latest
-    #   mistral-large-latest
-    #   mistral-embed
-    #   codestral-latest
-    # )
-    # |> Enum.sort()
-
     response =
       :get
       |> Finch.build(config()[:base_url] <> "/v1/models", headers())
