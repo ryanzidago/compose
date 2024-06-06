@@ -60,7 +60,7 @@ defmodule ComposeWeb.PatientForm.Mobility do
         "locale": "en",
         "patient_information": "The patient needs support when walking.",
         "form": {
-          "walking": #{@mobility_values},
+          "walking": #{inspect(@mobility_values)},
           "mobility_note": "string"
         }
       }
