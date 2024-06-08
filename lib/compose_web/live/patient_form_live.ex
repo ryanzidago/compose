@@ -4,11 +4,7 @@ defmodule ComposeWeb.PatientFormLive do
   alias ComposeWeb.PatientForm
   alias Phoenix.LiveView
 
-  @prompt_modes [
-    :per_form,
-    :per_section,
-    :per_field
-  ]
+  require Logger
 
   @impl LiveView
   def mount(%{"locale" => locale}, _session, socket) do
@@ -20,11 +16,12 @@ defmodule ComposeWeb.PatientFormLive do
         {:ok, %{changeset: PatientForm.changeset(%{})}}
       end)
       |> assign_async(:response, fn -> {:ok, %{response: nil}} end)
+      |> assign_async(:error, fn -> {:ok, %{error: nil}} end)
       |> assign(patient_report: nil)
       |> assign_backend_config()
       |> assign(locales: ~w(en de_DE))
       |> assign(locale: locale)
-      |> assign(prompt_modes: @prompt_modes)
+      |> assign(prompt_modes: Compose.LLM.prompt_modes())
       |> assign(prompt_mode: :per_form)
 
     {:ok, socket}
@@ -109,6 +106,10 @@ defmodule ComposeWeb.PatientFormLive do
           <div :if={@response.result} class="text-xs w-96 overflow-x-auto">
             <h2><%= dgettext("patient_form", "Response") %></h2>
             <pre class="w-90"><%= Jason.encode!(@response.result || "", pretty: true) %></pre>
+          </div>
+          <div :if={@error.result} class="text-xs w-96 overflow-x-auto">
+            <h2><%= dgettext("patient_form", "Error") %></h2>
+            <pre class="w-90"><%= inspect(@error, pretty: true) %></pre>
           </div>
         </.form>
 
@@ -252,7 +253,9 @@ defmodule ComposeWeb.PatientFormLive do
       |> assign(backend: backend)
       |> assign(models: backend.models())
       |> assign(model: (model in backend.models() && model) || backend.default_model())
-      |> assign(prompt_mode: (prompt_mode in @prompt_modes && prompt_mode) || :per_form)
+      |> assign(
+        prompt_mode: (prompt_mode in Compose.LLM.prompt_modes() && prompt_mode) || :per_form
+      )
 
     {:noreply, socket}
   end
@@ -265,7 +268,7 @@ defmodule ComposeWeb.PatientFormLive do
     patient_report = params["patient_report"]
 
     socket =
-      assign_async(socket, [:response, :changeset], fn ->
+      assign_async(socket, [:response, :changeset, :error], fn ->
         generate(
           %{backend: backend, model: model, patient_report: patient_report, locale: locale},
           prompt_mode
@@ -285,9 +288,14 @@ defmodule ComposeWeb.PatientFormLive do
   end
 
   defp generate(%{} = params, prompt_mode) do
-    {:ok, response} = Compose.LLM.generate(params, prompt_mode)
-    changeset = ComposeWeb.PatientForm.changeset(%ComposeWeb.PatientForm{}, response)
+    case Compose.LLM.generate(params, prompt_mode) do
+      {:ok, response} ->
+        changeset = ComposeWeb.PatientForm.changeset(%ComposeWeb.PatientForm{}, response)
+        {:ok, %{response: response, changeset: changeset, error: nil}}
 
-    {:ok, %{response: response, changeset: changeset}}
+      {:error, error} ->
+        Logger.error("Error: #{inspect(error)}")
+        {:error, %{error: error, response: nil, changeset: nil}}
+    end
   end
 end
