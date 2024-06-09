@@ -73,6 +73,7 @@ defmodule ComposeWeb.PatientForm.Mobility do
         "walking": "support",
         "mobility_note": "The patient needs support when walking."
       }
+      ```
       """
   end
 
@@ -99,6 +100,7 @@ defmodule ComposeWeb.PatientForm.Mobility do
       {
         "walking": "support",
       }
+      ```
       """
   end
 
@@ -125,6 +127,7 @@ defmodule ComposeWeb.PatientForm.Mobility do
       {
         "mobility_note": "The patient needs support when walking."
       }
+      ```
       """
   end
 end

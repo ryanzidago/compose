@@ -89,6 +89,7 @@ defmodule ComposeWeb.PatientForm.SpecialCare do
       {
         "severe_spasticity": true,
       }
+      ```
       """
   end
 
@@ -115,6 +116,7 @@ defmodule ComposeWeb.PatientForm.SpecialCare do
       {
         "hemiplegia_and_paresis": false,
       }
+      ```
       """
   end
 
@@ -141,6 +143,7 @@ defmodule ComposeWeb.PatientForm.SpecialCare do
       {
         "malposition_of_the_extremity": true,
       }
+      ```
       """
   end
 
@@ -167,6 +170,7 @@ defmodule ComposeWeb.PatientForm.SpecialCare do
       {
         "limited_resilience_due_to_cardiovascular_diseases": false,
       }
+      ```
       """
   end
 
@@ -193,6 +197,7 @@ defmodule ComposeWeb.PatientForm.SpecialCare do
       {
         "behavioral_problems_with_mental_illness_and_dementia": false,
       }
+      ```
       """
   end
 
@@ -219,6 +224,7 @@ defmodule ComposeWeb.PatientForm.SpecialCare do
       {
         "impaired_sensory_perception": false,
       }
+      ```
       """
   end
 
@@ -245,6 +251,7 @@ defmodule ComposeWeb.PatientForm.SpecialCare do
       {
         "therapy_resistant_pain": false,
       }
+      ```
       """
   end
 
@@ -271,6 +278,7 @@ defmodule ComposeWeb.PatientForm.SpecialCare do
       {
         "increased_need_for_care_due_to_body_weight": false,
       }
+      ```
       """
   end
 
@@ -297,6 +305,7 @@ defmodule ComposeWeb.PatientForm.SpecialCare do
       {
         "weight_bmi": false,
       }
+      ```
       """
   end
 end
