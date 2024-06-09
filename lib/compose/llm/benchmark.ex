@@ -10,11 +10,12 @@ defmodule Compose.LLM.Benchmark do
     models = Keyword.fetch!(config, :models)
     locale = Keyword.fetch!(config, :locale)
     patient_report = Keyword.fetch!(config, :patient_report)
+    parse_output = Keyword.fetch!(config, :parse_output)
 
     rows =
-      Enum.flat_map(1..iterations, fn _ ->
-        Enum.flat_map(prompt_modes, fn prompt_mode ->
-          Enum.map(models, fn {backend, model} ->
+      Enum.flat_map(1..iterations, fn _iteration ->
+        Enum.flat_map(models, fn {backend, model} ->
+          Enum.map(prompt_modes, fn prompt_mode ->
             {time, result} =
               :timer.tc(fn ->
                 Compose.LLM.generate(%{
@@ -22,7 +23,8 @@ defmodule Compose.LLM.Benchmark do
                   patient_report: patient_report,
                   backend: backend,
                   model: model,
-                  prompt_mode: prompt_mode
+                  prompt_mode: prompt_mode,
+                  parse_output: parse_output
                 })
               end)
 
@@ -33,18 +35,21 @@ defmodule Compose.LLM.Benchmark do
               end
 
             changeset =
-              if result[:response], do: PatientForm.changeset(%PatientForm{}, result[:response])
+              if not is_nil(result[:response]) do
+                PatientForm.changeset(%PatientForm{}, result[:response])
+              end
 
             [
               prompt_mode: prompt_mode,
-              backend: backend,
+              backend: backend(backend),
               model: model,
-              response: inspect(result[:response], pretty: true, printable_limit: :infinity),
-              error?: error?(result),
+              response:
+                inspect(result[:response] || "", pretty: true, printable_limit: :infinity),
+              error?: json_error?(result) or changeset_error?(changeset),
               json_error?: json_error?(result),
               json_error: json_error(result),
               changeset_error?: changeset_error?(changeset),
-              changeset: inspect(changeset, pretty: true, printable_limit: :infinity),
+              changeset: inspect(changeset || "", pretty: true, printable_limit: :infinity),
               duration_in_seconds: time / 1_000_000
             ]
           end)
@@ -70,6 +75,7 @@ defmodule Compose.LLM.Benchmark do
       iterations: 10,
       locale: "en",
       prompt_modes: [:per_form, :per_section, :per_field],
+      parse_output: true,
       models: [
         {Ollama, "llama3:latest"},
         {Ollama, "mistral:latest"},
@@ -85,14 +91,21 @@ defmodule Compose.LLM.Benchmark do
     ]
   end
 
-  defp error?(result), do: json_error?(result) or changeset_error?(result)
-  defp json_error?(result), do: is_nil(result[:error])
-  defp changeset_error?(changeset), do: not changeset.valid?
+  defp json_error?(result), do: not is_nil(result[:error])
+  defp changeset_error?(nil), do: false
+  defp changeset_error?(%Ecto.Changeset{} = changeset), do: not changeset.valid?
 
   defp json_error(result) do
     case result[:error] do
       %Jason.DecodeError{} = error -> inspect(error, pretty: true, printable_limit: :infinity)
-      _ -> nil
+      _ -> ""
     end
+  end
+
+  defp backend(module) do
+    module
+    |> Module.split()
+    |> List.last()
+    |> String.downcase()
   end
 end
