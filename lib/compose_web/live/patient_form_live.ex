@@ -269,10 +269,14 @@ defmodule ComposeWeb.PatientFormLive do
 
     socket =
       assign_async(socket, [:response, :changeset, :error], fn ->
-        generate(
-          %{backend: backend, model: model, patient_report: patient_report, locale: locale},
-          prompt_mode
-        )
+        generate(%{
+          backend: backend,
+          model: model,
+          patient_report: patient_report,
+          locale: locale,
+          prompt_mode: prompt_mode,
+          parse_output: true
+        })
       end)
 
     {:noreply, socket}
@@ -287,14 +291,15 @@ defmodule ComposeWeb.PatientFormLive do
     {:noreply, redirect(socket, to: ~p"/#{locale}/form")}
   end
 
-  defp generate(%{} = params, prompt_mode) do
-    case Compose.LLM.generate(params, prompt_mode) do
+  defp generate(%{} = params) do
+    case Compose.LLM.generate(params) do
       {:ok, response} ->
         changeset = ComposeWeb.PatientForm.changeset(%ComposeWeb.PatientForm{}, response)
+        Logger.debug("#{inspect(changeset, pretty: true, printable_limit: :infinity)}")
         {:ok, %{response: response, changeset: changeset, error: nil}}
 
       {:error, error} ->
-        Logger.error("Error: #{inspect(error)}")
+        Logger.error("#{inspect(error, pretty: true, printable_limit: :infinity)}")
         {:error, %{error: error, response: nil, changeset: nil}}
     end
   end

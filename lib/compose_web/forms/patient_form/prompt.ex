@@ -15,7 +15,7 @@ defmodule ComposeWeb.PatientForm.Prompt do
       - `false` for `boolean` fields.
       - `""` for `string` fields.
       - `null` for `enum` fields.
-
+    4) Only reply with a single value for any enum fields. For example if the field accepts `["female", "male"]`, you should reply with `"female"` or "male"`.
     """
   end
 end

@@ -17,15 +17,13 @@ defmodule Compose.LLM.Benchmark do
           Enum.map(models, fn {backend, model} ->
             {time, result} =
               :timer.tc(fn ->
-                Compose.LLM.generate(
-                  %{
-                    locale: locale,
-                    patient_report: patient_report,
-                    backend: backend,
-                    model: model
-                  },
-                  prompt_mode
-                )
+                Compose.LLM.generate(%{
+                  locale: locale,
+                  patient_report: patient_report,
+                  backend: backend,
+                  model: model,
+                  prompt_mode: prompt_mode
+                })
               end)
 
             result =

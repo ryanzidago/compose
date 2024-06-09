@@ -21,7 +21,7 @@ defmodule Compose.LLM.Backend.Ollama do
         prompt: body.input
       }
 
-    Logger.debug(body)
+    Logger.debug(inspect(body, pretty: true, printable_limit: :infinity))
 
     Jason.encode(body)
   end

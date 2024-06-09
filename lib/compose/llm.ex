@@ -5,12 +5,7 @@ defmodule Compose.LLM do
     [:per_form, :per_section, :per_field]
   end
 
-  def generate(params) do
-    {backend, params} = Map.pop!(params, :backend)
-    backend.generate(params)
-  end
-
-  def generate(params, _prompt_mode = :per_form) do
+  def generate(%{prompt_mode: :per_form} = params) do
     system = PatientForm.Prompt.base_prompt()
 
     input =
@@ -21,7 +16,7 @@ defmodule Compose.LLM do
       })
 
     result =
-      generate(%{
+      do_generate(%{
         system: system,
         input: input,
         backend: params.backend,
@@ -29,14 +24,14 @@ defmodule Compose.LLM do
       })
 
     with {:ok, response} <- result,
-         {:ok, response} <- parse(response) do
+         {:ok, response} <- maybe_parse(response, Map.get(params, :parse_output, false)) do
       {:ok, response}
     else
       {:error, error} -> {:error, error}
     end
   end
 
-  def generate(params, _prompt_mode = :per_section) do
+  def generate(%{prompt_mode: :per_section} = params) do
     PatientForm.schema()
     |> Map.keys()
     |> Enum.reduce_while({:ok, %{}}, fn section, {:ok, acc} ->
@@ -55,7 +50,7 @@ defmodule Compose.LLM do
         })
 
       result =
-        generate(%{
+        do_generate(%{
           system: system,
           input: input,
           backend: params.backend,
@@ -63,7 +58,7 @@ defmodule Compose.LLM do
         })
 
       with {:ok, response} <- result,
-           {:ok, response} <- parse(response) do
+           {:ok, response} <- maybe_parse(response, Map.get(params, :parse_output, false)) do
         acc = Map.put(acc, Atom.to_string(section), response)
         {:cont, {:ok, acc}}
       else
@@ -72,7 +67,7 @@ defmodule Compose.LLM do
     end)
   end
 
-  def generate(params, _prompt_mode = :per_field) do
+  def generate(%{prompt_mode: :per_field} = params) do
     flattened_schema =
       Enum.flat_map(PatientForm.schema(), fn {section, fields} ->
         Enum.map(fields, fn field -> {section, field} end)
@@ -90,7 +85,7 @@ defmodule Compose.LLM do
           })
 
         result =
-          generate(%{
+          do_generate(%{
             system: system,
             input: input,
             backend: params.backend,
@@ -98,7 +93,7 @@ defmodule Compose.LLM do
           })
 
         with {:ok, response} <- result,
-             {:ok, response} <- parse(response) do
+             {:ok, response} <- maybe_parse(response, Map.get(params, :parse_output, false)) do
           acc =
             Map.update(acc, Atom.to_string(section), response, fn section_response ->
               Map.merge(section_response, response)
@@ -109,6 +104,11 @@ defmodule Compose.LLM do
           {:error, error} -> {:halt, {:error, error}}
         end
     end)
+  end
+
+  defp do_generate(params) do
+    {backend, params} = Map.pop!(params, :backend)
+    backend.generate(params)
   end
 
   def module(name) when is_atom(name) do
@@ -124,6 +124,9 @@ defmodule Compose.LLM do
   def module(name) when is_binary(name) do
     String.to_existing_atom("Elixir.Compose.LLM.Backend.#{String.capitalize(name)}")
   end
+
+  def maybe_parse(response, _parse = true), do: parse(response)
+  def maybe_parse(response, _parse = false), do: {:ok, response}
 
   # sometimes the LLM returns the response within a map with a key "form"
   def parse(%{"form" => response}), do: parse(response)
