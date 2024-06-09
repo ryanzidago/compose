@@ -130,7 +130,7 @@ defmodule Compose.LLM do
 
   # sometimes the LLM returns a result that needs to be JSON decoded twice!
   def parse(response) when is_binary(response) do
-    case Jason.decode(response) do
+    case Jason.decode(String.trim(response)) do
       {:ok, response} -> parse(response)
       {:error, error} -> {:error, error}
     end
