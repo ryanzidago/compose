@@ -173,6 +173,24 @@ defmodule Compose.LLM.Benchmark do
           Map.put(acc, "mobility_note", expected: expected_value, actual: actual_value)
         end
 
+      {"walking", expected_value}, acc ->
+        actual_value = Map.get(actual, "walking", "")
+
+        if actual_value in ~w(support partial_takeover complete_takeover) do
+          acc
+        else
+          Map.put(acc, "walking", expected: expected_value, actual: actual_value)
+        end
+
+      {key, false}, acc ->
+        actual_value = Map.get(actual, key, false)
+
+        if actual_value in [nil, false] do
+          acc
+        else
+          Map.put(acc, key, expected: false, actual: actual_value)
+        end
+
       {key, expected_value}, acc ->
         actual_value = Map.get(actual, key)
 
