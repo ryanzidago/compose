@@ -162,7 +162,7 @@ defmodule Compose.LLM.Benchmark do
     end)
   end
 
-  def do_diff(%{} = expected, %{} = actual) do
+  defp do_diff(%{} = expected, %{} = actual) do
     Enum.reduce(expected, %{}, fn
       {"mobility_note", expected_value}, acc ->
         actual_value = Map.get(actual, "mobility_note", "")
