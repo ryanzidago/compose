@@ -1,99 +1,99 @@
-#: lib/compose_web/live/patient_form_live.ex:91
+#: lib/compose_web/live/patient_form_live.ex:88
 #, elixir-autogen, elixir-format
 msgid "Write the text that contains the patient information here."
 msgstr ""
 
-#: lib/compose_web/live/patient_form_live.ex:172
+#: lib/compose_web/live/patient_form_live.ex:173
 #, elixir-autogen, elixir-format
 msgid "Behavioral problems with mental illness and dementia"
 msgstr ""
 
-#: lib/compose_web/live/patient_form_live.ex:154
+#: lib/compose_web/live/patient_form_live.ex:155
 #, elixir-autogen, elixir-format
 msgid "Hemiplegia and Paresis"
 msgstr ""
 
-#: lib/compose_web/live/patient_form_live.ex:181
+#: lib/compose_web/live/patient_form_live.ex:182
 #, elixir-autogen, elixir-format
 msgid "Impaired sensory perception"
 msgstr ""
 
-#: lib/compose_web/live/patient_form_live.ex:191
+#: lib/compose_web/live/patient_form_live.ex:192
 #, elixir-autogen, elixir-format
 msgid "Increased need for care due to body weight"
 msgstr ""
 
-#: lib/compose_web/live/patient_form_live.ex:165
+#: lib/compose_web/live/patient_form_live.ex:166
 #, elixir-autogen, elixir-format
 msgid "Limited resilience due to cardiovascular diseases"
 msgstr ""
 
-#: lib/compose_web/live/patient_form_live.ex:159
+#: lib/compose_web/live/patient_form_live.ex:160
 #, elixir-autogen, elixir-format
 msgid "Malposition of the extremity"
 msgstr ""
 
-#: lib/compose_web/live/patient_form_live.ex:209
+#: lib/compose_web/live/patient_form_live.ex:210
 #, elixir-autogen, elixir-format
 msgid "Select an option"
 msgstr ""
 
-#: lib/compose_web/live/patient_form_live.ex:149
+#: lib/compose_web/live/patient_form_live.ex:150
 #, elixir-autogen, elixir-format
 msgid "Severe Spasticity"
 msgstr ""
 
-#: lib/compose_web/live/patient_form_live.ex:186
+#: lib/compose_web/live/patient_form_live.ex:187
 #, elixir-autogen, elixir-format
 msgid "Therapy-resistant pain"
 msgstr ""
 
-#: lib/compose_web/live/patient_form_live.ex:208
+#: lib/compose_web/live/patient_form_live.ex:209
 #, elixir-autogen, elixir-format
 msgid "Walking"
 msgstr ""
 
-#: lib/compose_web/live/patient_form_live.ex:196
+#: lib/compose_web/live/patient_form_live.ex:197
 #, elixir-autogen, elixir-format
 msgid "Weight/BMI"
 msgstr ""
 
-#: lib/compose_web/live/patient_form_live.ex:202
+#: lib/compose_web/live/patient_form_live.ex:203
 #, elixir-autogen, elixir-format, fuzzy
 msgid "Mobility"
 msgstr ""
 
-#: lib/compose_web/live/patient_form_live.ex:143
+#: lib/compose_web/live/patient_form_live.ex:144
 #, elixir-autogen, elixir-format
 msgid "Special care problems"
 msgstr ""
 
-#: lib/compose_web/live/patient_form_live.ex:132
+#: lib/compose_web/live/patient_form_live.ex:133
 #, elixir-autogen, elixir-format
 msgid "First name"
 msgstr ""
 
-#: lib/compose_web/live/patient_form_live.ex:137
+#: lib/compose_web/live/patient_form_live.ex:138
 #, elixir-autogen, elixir-format
 msgid "Last name"
 msgstr ""
 
-#: lib/compose_web/live/patient_form_live.ex:122
+#: lib/compose_web/live/patient_form_live.ex:123
 #, elixir-autogen, elixir-format
 msgid "Patient information"
 msgstr ""
 
-#: lib/compose_web/live/patient_form_live.ex:215
+#: lib/compose_web/live/patient_form_live.ex:216
 #, elixir-autogen, elixir-format, fuzzy
 msgid "Remark"
 msgstr ""
 
-#: lib/compose_web/live/patient_form_live.ex:216
+#: lib/compose_web/live/patient_form_live.ex:217
 #, elixir-autogen, elixir-format, fuzzy
 msgid "(e.g. Movement plan)"
 msgstr ""
 
-#: lib/compose_web/live/patient_form_live.ex:72
+#: lib/compose_web/live/patient_form_live.ex:69
 #, elixir-autogen, elixir-format
 msgid "Locale"
 msgstr ""
@@ -118,7 +118,7 @@ msgstr ""
 msgid "Partial Takeover"
 msgstr ""
 
-#: lib/compose_web/live/patient_form_live.ex:110
+#: lib/compose_web/live/patient_form_live.ex:107
 #, elixir-autogen, elixir-format
 msgid "Response"
 msgstr ""
@@ -131,4 +131,19 @@ msgstr ""
 #: lib/compose_web/forms/patient_form/mobility.ex:44
 #, elixir-autogen, elixir-format
 msgid "Support"
+msgstr ""
+
+#: lib/compose_web/live/patient_form_live.ex:111
+#, elixir-autogen, elixir-format
+msgid "Error"
+msgstr ""
+
+#: lib/compose_web/live/patient_form_live.ex:104
+#, elixir-autogen, elixir-format
+msgid "Loading"
+msgstr ""
+
+#: lib/compose_web/live/patient_form_live.ex:102
+#, elixir-autogen, elixir-format
+msgid "Send"
 msgstr ""

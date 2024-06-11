@@ -99,9 +99,9 @@ defmodule ComposeWeb.PatientFormLive do
               options={@prompt_modes}
             />
           </div>
-          <.button :if={!@response.loading}>Senden</.button>
+          <.button :if={!@response.loading}><%= dgettext("patient_form", "Send") %></.button>
           <.button :if={@response.loading} class="opacity-80 cursor-progress">
-            Lädt...
+            <%= dgettext("patient_form", "Loading") %>
           </.button>
           <div :if={@response.result} class="text-xs w-96 overflow-x-auto">
             <h2><%= dgettext("patient_form", "Response") %></h2>
