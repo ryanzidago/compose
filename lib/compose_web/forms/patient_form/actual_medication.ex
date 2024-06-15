@@ -29,6 +29,18 @@ defmodule ComposeWeb.PatientForm.ActualMedication do
 
   def changeset(%__MODULE__{} = actual_medication, attrs) do
     actual_medication
-    |> cast(attrs, __MODULE__.__schema__(:fields))
+    |> cast(attrs, __MODULE__.__schema__(:fields) -- __MODULE__.__schema__(:embeds))
+    |> cast_embed(:medications, with: &medications_changeset/2)
+    |> cast_embed(:medications_as_needed, with: &medications_as_needed_changeset/2)
+  end
+
+  def medications_changeset(%__MODULE__.Medication{} = medication, attrs) do
+    medication
+    |> cast(attrs, [:name, :time])
+  end
+
+  def medications_as_needed_changeset(%__MODULE__.MedicationAsNeeded{} = actual_medication, attrs) do
+    actual_medication
+    |> cast(attrs, [:name, :time])
   end
 end

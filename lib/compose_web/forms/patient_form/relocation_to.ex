@@ -8,7 +8,7 @@ defmodule ComposeWeb.PatientForm.RelocationTo do
   @primary_key false
   embedded_schema do
     # Verlegung nach
-    field :relocation_to, :string
+    field :address, :string
     # Hause
     field :home, :boolean
     # Kontaktperson
