@@ -208,7 +208,7 @@ defmodule ComposeWeb.PatientFormLive do
                   field={mobility[:walking]}
                   label={dgettext("patient_form", "Walking")}
                   prompt={dgettext("patient_form", "Select an option")}
-                  options={ComposeWeb.PatientForm.Mobility.mobility_values_options()}
+                  options={ComposeWeb.PatientForm.Legend.values_options()}
                 />
                 <.input
                   type="text"

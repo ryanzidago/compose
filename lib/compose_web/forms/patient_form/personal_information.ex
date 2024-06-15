@@ -9,6 +9,37 @@ defmodule ComposeWeb.PatientForm.PersonalInformation do
   embedded_schema do
     field :first_name, :string
     field :last_name, :string
+    # Adresse
+    field :address, :string
+    # Geburtsdatum
+    field :birth_date, :date
+    # Personalausweis
+    field :id_card, :boolean
+    # Zusatzversicherung
+    field :additional_insurance, :boolean
+    # krankenversichertenkarte
+    field :health_insurance_card, :boolean
+    # Zuzahlungsbefreiung
+    field :exmption_from_co_payment, :boolean
+    # Religion
+    field :religion, :string
+    # Muttersprache
+    field :mother_tongue, :string
+
+    # Pflegestufe bewilligt
+    field :care_level_approved, Ecto.Enum,
+      values: [:"0", :"1", :"2", :"3", :hard_case, :expedited_procedure]
+
+    # Pflegestufe beantragt am
+    field :care_level_requested_at, :utc_datetime
+    # Absatz 37 Abs. 1 (SGB V) Genehmigt bis
+    field :paragraph_37_section_1_approved_until, :utc_datetime
+    # Absatz 37 Abs. 2 (SGB V) Genehmigt bis
+    field :paragraph_37_section_2_approved_until, :utc_datetime
+    # Absatz 37b (SGB V) Genehmigt bis
+    field :paragraph_37b_approved_until, :utc_datetime
+    # Absatz 42 (SGB XI) Genehmigt bis
+    field :paragraph_42_approved_until, :utc_datetime
   end
 
   def changeset(%__MODULE__{} = personal_info, attrs) do
