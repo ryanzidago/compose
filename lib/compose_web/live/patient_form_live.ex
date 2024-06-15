@@ -248,7 +248,7 @@ defmodule ComposeWeb.PatientFormLive do
                   label={dgettext("patient_form", "Representative last name")}
                 />
                 <.input
-                  type="text"
+                  type="tel"
                   field={representative[:phone_number]}
                   label={dgettext("patient_form", "Representative phone number")}
                 />
@@ -262,7 +262,7 @@ defmodule ComposeWeb.PatientFormLive do
                   }
                 />
                 <.input
-                  type="text"
+                  type="tel"
                   field={representative[:mobile_number]}
                   label={dgettext("patient_form", "Representative mobile number")}
                 />
@@ -337,7 +337,7 @@ defmodule ComposeWeb.PatientFormLive do
                   label={dgettext("patient_form", "Social service name")}
                 />
                 <.input
-                  type="text"
+                  type="tel"
                   field={authorised_representative[:social_service_phone_number]}
                   label={dgettext("patient_form", "Social service phone number")}
                 />
@@ -376,7 +376,7 @@ defmodule ComposeWeb.PatientFormLive do
                   label={dgettext("patient_form", "Contact person")}
                 />
                 <.input
-                  type="text"
+                  type="tel"
                   field={relocation_from[:phone_number]}
                   label={dgettext("patient_form", "Phone number")}
                 />
@@ -408,7 +408,7 @@ defmodule ComposeWeb.PatientFormLive do
                   label={dgettext("patient_form", "Contact person")}
                 />
                 <.input
-                  type="text"
+                  type="tel"
                   field={relocation_to[:phone_number]}
                   label={dgettext("patient_form", "Phone number")}
                 />
@@ -431,7 +431,7 @@ defmodule ComposeWeb.PatientFormLive do
                   label={dgettext("patient_form", "Treating doctor name")}
                 />
                 <.input
-                  type="text"
+                  type="tel"
                   field={treating_doctor[:phone_number]}
                   label={dgettext("patient_form", "Treating doctor phone number")}
                 />
@@ -555,7 +555,7 @@ defmodule ComposeWeb.PatientFormLive do
                   field={actual_medication[:medications]}
                   as={:medications}
                 >
-                  <div class="flex flex-col gap-2">
+                  <div class="flex flex-row gap-2">
                     <.input
                       type="text"
                       field={medications[:name]}
@@ -573,7 +573,7 @@ defmodule ComposeWeb.PatientFormLive do
                   field={actual_medication[:medications_as_needed]}
                   as={:medications_as_needed}
                 >
-                  <div class="flex flex-col gap-2">
+                  <div class="flex flex-row gap-2">
                     <.input
                       type="text"
                       field={medications_as_needed[:name]}
@@ -789,8 +789,8 @@ defmodule ComposeWeb.PatientFormLive do
                 <.input type="text" field={mobility[:aids]} label={dgettext("patient_form", "Aids")} />
                 <.input
                   type="text"
-                  field={mobility[:mobility_note]}
-                  label={dgettext("patient_form", "Remark")}
+                  field={mobility[:note]}
+                  label={dgettext("patient_form", "Note")}
                   placeholder={dgettext("patient_form", "(e.g. Movement plan)")}
                 />
               </div>

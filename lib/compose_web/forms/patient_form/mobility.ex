@@ -23,7 +23,7 @@ defmodule ComposeWeb.PatientForm.Mobility do
     field :laying, Ecto.Enum, values: values()
 
     field :aids, :string
-    field :mobility_note, :string
+    field :note, :string
   end
 
   def changeset(%__MODULE__{} = mobility, attrs) do
