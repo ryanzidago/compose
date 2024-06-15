@@ -123,15 +123,15 @@ defmodule Compose.LLM.Benchmark do
           "last_name" => "Weber"
         },
         "special_care" => %{
-          "therapy_resistant_pain" => true,
-          "limited_resilience_due_to_cardiovascular_diseases" => true,
-          "malposition_of_the_extremity" => false,
-          "severe_spasticity" => false,
-          "hemiplegia_and_paresis" => false,
-          "behavioral_problems_with_mental_illness_and_dementia" => false,
-          "impaired_sensory_perception" => false,
-          "increased_need_for_care_due_to_body_weight" => false,
-          "weight_bmi" => false
+          "has_therapy_resistant_pain" => true,
+          "has_limited_resilience_due_to_cardiovascular_diseases" => true,
+          "has_malposition_of_the_extremity" => false,
+          "has_severe_spasticity" => false,
+          "has_hemiplegia_and_paresis" => false,
+          "has_behavioral_problems_with_mental_illness_and_dementia" => false,
+          "has_impaired_sensory_perception" => false,
+          "has_increased_need_for_care_due_to_body_weight" => false,
+          "has_weight_bmi_issues" => false
         }
       }
     ]

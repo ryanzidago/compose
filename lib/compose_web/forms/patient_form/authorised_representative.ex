@@ -8,15 +8,15 @@ defmodule ComposeWeb.PatientForm.AuthorisedRepresentative do
   @primary_key false
   embedded_schema do
     # Gesetzlicher Bertreuer
-    field :legal_guardian, :boolean
+    field :is_legal_guardian, :boolean
     # Bevollmächtigter
-    field :authorised_representative, :boolean
+    field :is_authorised_representative, :boolean
     field :first_name, :string
     field :last_name, :string
     field :fax_number, :string
     field :email, :string
     # Generalvollmacht
-    field :general_power_of_attorney, :boolean
+    field :has_general_power_of_attorney, :boolean
     # Patientenverfügung liegt vor
     field :living_will_exists, :boolean
     # Sozialdienst eingeschaltet

@@ -9,9 +9,9 @@ defmodule ComposeWeb.PatientForm.OccupyOneSelf do
   @derive Jason.Encoder
   @primary_key false
   embedded_schema do
-    field :reading, :boolean
-    field :radio, :boolean
-    field :tv, :boolean
+    field :can_read, :boolean
+    field :uses_radio, :boolean
+    field :uses_tv, :boolean
     field :note, :string
   end
 

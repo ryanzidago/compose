@@ -10,13 +10,13 @@ defmodule ComposeWeb.PatientForm.Attachment do
   @primary_key false
   embedded_schema do
     # Mediplan
-    field :medication_plan, :boolean
+    field :has_medication_plan, :boolean
     # Betreuerausweis
-    field :carer_id_card, :boolean
+    field :has_carer_id_card, :boolean
     # Wunddokumentation
-    field :wound_documentation, :boolean
+    field :has_wound_documentation, :boolean
     # Patientenverfügung
-    field :living_will, :boolean
+    field :has_living_will, :boolean
     # Sonstiges
     field :other, :string
     # Telefonische Nachfrage

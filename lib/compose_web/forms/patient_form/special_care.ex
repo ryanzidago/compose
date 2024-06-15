@@ -7,15 +7,15 @@ defmodule ComposeWeb.PatientForm.SpecialCare do
   @derive Jason.Encoder
   @primary_key false
   embedded_schema do
-    field :severe_spasticity, :boolean
-    field :hemiplegia_and_paresis, :boolean
-    field :malposition_of_the_extremity, :boolean
-    field :limited_resilience_due_to_cardiovascular_diseases, :boolean
-    field :behavioral_problems_with_mental_illness_and_dementia, :boolean
-    field :impaired_sensory_perception, :boolean
-    field :therapy_resistant_pain, :boolean
-    field :increased_need_for_care_due_to_body_weight, :boolean
-    field :weight_bmi, :boolean
+    field :has_severe_spasticity, :boolean
+    field :has_hemiplegia_and_paresis, :boolean
+    field :has_malposition_of_the_extremity, :boolean
+    field :has_limited_resilience_due_to_cardiovascular_diseases, :boolean
+    field :has_behavioral_problems_with_mental_illness_and_dementia, :boolean
+    field :has_impaired_sensory_perception, :boolean
+    field :has_therapy_resistant_pain, :boolean
+    field :has_increased_need_for_care_due_to_body_weight, :boolean
+    field :has_weight_bmi_issues, :boolean
   end
 
   def changeset(%__MODULE__{} = special_care, attrs) do
@@ -35,15 +35,15 @@ defmodule ComposeWeb.PatientForm.SpecialCare do
         "locale": "en",
         "patient_information": "The patient has severe spasticity and malposition of the extremity.",
         "form": {
-          "severe_spasticity": "boolean",
-          "hemiplegia_and_paresis": "boolean",
-          "malposition_of_the_extremity": "boolean",
-          "limited_resilience_due_to_cardiovascular_diseases": "boolean",
-          "behavioral_problems_with_mental_illness_and_dementia": "boolean",
-          "impaired_sensory_perception": "boolean",
-          "therapy_resistant_pain": "boolean",
-          "increased_need_for_care_due_to_body_weight": "boolean",
-          "weight_bmi": "boolean"
+          "has_severe_spasticity": "boolean",
+          "has_hemiplegia_and_paresis": "boolean",
+          "has_malposition_of_the_extremity": "boolean",
+          "has_limited_resilience_due_to_cardiovascular_diseases": "boolean",
+          "has_behavioral_problems_with_mental_illness_and_dementia": "boolean",
+          "has_impaired_sensory_perception": "boolean",
+          "has_therapy_resistant_pain": "boolean",
+          "has_increased_need_for_care_due_to_body_weight": "boolean",
+          "has_weight_bmi_issues": "boolean"
         }
       }
       ```
@@ -52,21 +52,21 @@ defmodule ComposeWeb.PatientForm.SpecialCare do
 
       ```json
       {
-        "severe_spasticity": true,
-        "hemiplegia_and_paresis": false,
-        "malposition_of_the_extremity": true,
-        "limited_resilience_due_to_cardiovascular_diseases": false,
-        "behavioral_problems_with_mental_illness_and_dementia": false,
-        "impaired_sensory_perception": false,
-        "therapy_resistant_pain": false,
-        "increased_need_for_care_due_to_body_weight": false,
-        "weight_bmi": false
+        "has_severe_spasticity": true,
+        "has_hemiplegia_and_paresis": false,
+        "has_malposition_of_the_extremity": true,
+        "has_limited_resilience_due_to_cardiovascular_diseases": false,
+        "has_behavioral_problems_with_mental_illness_and_dementia": false,
+        "has_impaired_sensory_perception": false,
+        "has_therapy_resistant_pain": false,
+        "has_increased_need_for_care_due_to_body_weight": false,
+        "has_weight_bmi_issues": false
       }
       ```
       """
   end
 
-  def prompt(:special_care, :severe_spasticity) do
+  def prompt(:special_care, :has_severe_spasticity) do
     base_prompt() <>
       """
       Identify if the patient has severe spasticity in the `patient_information`.
@@ -78,7 +78,7 @@ defmodule ComposeWeb.PatientForm.SpecialCare do
         "locale": "en",
         "patient_information": "The patient has severe spasticity and malposition of the extremity.",
         "form": {
-          "severe_spasticity": "boolean",
+          "has_severe_spasticity": "boolean",
         }
       }
       ```
@@ -87,13 +87,13 @@ defmodule ComposeWeb.PatientForm.SpecialCare do
 
       ```json
       {
-        "severe_spasticity": true,
+        "has_severe_spasticity": true,
       }
       ```
       """
   end
 
-  def prompt(:special_care, :hemiplegia_and_paresis) do
+  def prompt(:special_care, :has_hemiplegia_and_paresis) do
     base_prompt() <>
       """
       Identify if the patient has hemiplegia and paresis in the `patient_information`.
@@ -105,7 +105,7 @@ defmodule ComposeWeb.PatientForm.SpecialCare do
         "locale": "en",
         "patient_information": "The patient has severe spasticity and malposition of the extremity.",
         "form": {
-          "hemiplegia_and_paresis": "boolean",
+          "has_hemiplegia_and_paresis": "boolean",
         }
       }
       ```
@@ -114,13 +114,13 @@ defmodule ComposeWeb.PatientForm.SpecialCare do
 
       ```json
       {
-        "hemiplegia_and_paresis": false,
+        "has_hemiplegia_and_paresis": false,
       }
       ```
       """
   end
 
-  def prompt(:special_care, :malposition_of_the_extremity) do
+  def prompt(:special_care, :has_malposition_of_the_extremity) do
     base_prompt() <>
       """
       Identify if the patient has malposition of the extremity in the `patient_information`.
@@ -132,7 +132,7 @@ defmodule ComposeWeb.PatientForm.SpecialCare do
         "locale": "en",
         "patient_information": "The patient has severe spasticity and malposition of the extremity.",
         "form": {
-          "malposition_of_the_extremity": "boolean",
+          "has_malposition_of_the_extremity": "boolean",
         }
       }
       ```
@@ -141,13 +141,13 @@ defmodule ComposeWeb.PatientForm.SpecialCare do
 
       ```json
       {
-        "malposition_of_the_extremity": true,
+        "has_malposition_of_the_extremity": true,
       }
       ```
       """
   end
 
-  def prompt(:special_care, :limited_resilience_due_to_cardiovascular_diseases) do
+  def prompt(:special_care, :has_limited_resilience_due_to_cardiovascular_diseases) do
     base_prompt() <>
       """
       Identify if the patient has limited resilience due to cardiovascular diseases in the `patient_information`.
@@ -159,7 +159,7 @@ defmodule ComposeWeb.PatientForm.SpecialCare do
         "locale": "en",
         "patient_information": "The patient has severe spasticity and malposition of the extremity.",
         "form": {
-          "limited_resilience_due_to_cardiovascular_diseases": "boolean",
+          "has_limited_resilience_due_to_cardiovascular_diseases": "boolean",
         }
       }
       ```
@@ -168,13 +168,13 @@ defmodule ComposeWeb.PatientForm.SpecialCare do
 
       ```json
       {
-        "limited_resilience_due_to_cardiovascular_diseases": false,
+        "has_limited_resilience_due_to_cardiovascular_diseases": false,
       }
       ```
       """
   end
 
-  def prompt(:special_care, :behavioral_problems_with_mental_illness_and_dementia) do
+  def prompt(:special_care, :has_behavioral_problems_with_mental_illness_and_dementia) do
     base_prompt() <>
       """
       Identify if the patient has behavioral problems with mental illness and dementia in the `patient_information`.
@@ -186,7 +186,7 @@ defmodule ComposeWeb.PatientForm.SpecialCare do
         "locale": "en",
         "patient_information": "The patient has severe spasticity and malposition of the extremity.",
         "form": {
-          "behavioral_problems_with_mental_illness_and_dementia": "boolean",
+          "has_behavioral_problems_with_mental_illness_and_dementia": "boolean",
         }
       }
       ```
@@ -195,13 +195,13 @@ defmodule ComposeWeb.PatientForm.SpecialCare do
 
       ```json
       {
-        "behavioral_problems_with_mental_illness_and_dementia": false,
+        "has_behavioral_problems_with_mental_illness_and_dementia": false,
       }
       ```
       """
   end
 
-  def prompt(:special_care, :impaired_sensory_perception) do
+  def prompt(:special_care, :has_impaired_sensory_perception) do
     base_prompt() <>
       """
       Identify if the patient has impaired sensory perception in the `patient_information`.
@@ -213,7 +213,7 @@ defmodule ComposeWeb.PatientForm.SpecialCare do
         "locale": "en",
         "patient_information": "The patient has severe spasticity and malposition of the extremity.",
         "form": {
-          "impaired_sensory_perception": "boolean",
+          "has_impaired_sensory_perception": "boolean",
         }
       }
       ```
@@ -222,13 +222,13 @@ defmodule ComposeWeb.PatientForm.SpecialCare do
 
       ```json
       {
-        "impaired_sensory_perception": false,
+        "has_impaired_sensory_perception": false,
       }
       ```
       """
   end
 
-  def prompt(:special_care, :therapy_resistant_pain) do
+  def prompt(:special_care, :has_therapy_resistant_pain) do
     base_prompt() <>
       """
       Identify if the patient has therapy resistant pain in the `patient_information`.
@@ -240,7 +240,7 @@ defmodule ComposeWeb.PatientForm.SpecialCare do
         "locale": "en",
         "patient_information": "The patient has severe spasticity and malposition of the extremity.",
         "form": {
-          "therapy_resistant_pain": "boolean",
+          "has_therapy_resistant_pain": "boolean",
         }
       }
       ```
@@ -249,13 +249,13 @@ defmodule ComposeWeb.PatientForm.SpecialCare do
 
       ```json
       {
-        "therapy_resistant_pain": false,
+        "has_therapy_resistant_pain": false,
       }
       ```
       """
   end
 
-  def prompt(:special_care, :increased_need_for_care_due_to_body_weight) do
+  def prompt(:special_care, :has_increased_need_for_care_due_to_body_weight) do
     base_prompt() <>
       """
       Identify if the patient has increased need for care due to body weight in the `patient_information`.
@@ -267,7 +267,7 @@ defmodule ComposeWeb.PatientForm.SpecialCare do
         "locale": "en",
         "patient_information": "The patient has severe spasticity and malposition of the extremity.",
         "form": {
-          "increased_need_for_care_due_to_body_weight": "boolean",
+          "has_increased_need_for_care_due_to_body_weight": "boolean",
         }
       }
       ```
@@ -276,13 +276,13 @@ defmodule ComposeWeb.PatientForm.SpecialCare do
 
       ```json
       {
-        "increased_need_for_care_due_to_body_weight": false,
+        "has_increased_need_for_care_due_to_body_weight": false,
       }
       ```
       """
   end
 
-  def prompt(:special_care, :weight_bmi) do
+  def prompt(:special_care, :has_weight_bmi_issues) do
     base_prompt() <>
       """
       Identify if the patient has weight BMI in the `patient_information`.
@@ -294,7 +294,7 @@ defmodule ComposeWeb.PatientForm.SpecialCare do
         "locale": "en",
         "patient_information": "The patient has severe spasticity and malposition of the extremity.",
         "form": {
-          "weight_bmi": "boolean",
+          "has_weight_bmi_issues": "boolean",
         }
       }
       ```
@@ -303,7 +303,7 @@ defmodule ComposeWeb.PatientForm.SpecialCare do
 
       ```json
       {
-        "weight_bmi": false,
+        "has_weight_bmi_issues": false,
       }
       ```
       """

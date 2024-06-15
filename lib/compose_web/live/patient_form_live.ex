@@ -154,17 +154,17 @@ defmodule ComposeWeb.PatientFormLive do
                 />
                 <.input
                   type="checkbox"
-                  field={information[:additional_insurance]}
+                  field={information[:has_additional_insurance]}
                   label={dgettext("patient_form", "Additional insurance")}
                 />
                 <.input
                   type="checkbox"
-                  field={information[:health_insurance_card]}
+                  field={information[:has_health_insurance_card]}
                   label={dgettext("patient_form", "Health insurance card")}
                 />
                 <.input
                   type="checkbox"
-                  field={information[:exmption_from_co_payment]}
+                  field={information[:is_exempt_from_co_payment]}
                   label={dgettext("patient_form", "Exemption from co-payment")}
                 />
                 <.input
@@ -229,12 +229,12 @@ defmodule ComposeWeb.PatientFormLive do
                 />
                 <.input
                   type="checkbox"
-                  field={representative[:representative]}
+                  field={representative[:is_representative]}
                   label={dgettext("patient_form", "Representative")}
                 />
                 <.input
                   type="checkbox"
-                  field={representative[:informed]}
+                  field={representative[:is_informed]}
                   label={dgettext("patient_form", "Informed")}
                 />
                 <.input
@@ -288,12 +288,12 @@ defmodule ComposeWeb.PatientFormLive do
               <div class="flex flex-col gap-2">
                 <.input
                   type="checkbox"
-                  field={authorised_representative[:legal_guardian]}
+                  field={authorised_representative[:is_legal_guardian]}
                   label={dgettext("patient_form", "Legal guardian")}
                 />
                 <.input
                   type="checkbox"
-                  field={authorised_representative[:authorised_representative]}
+                  field={authorised_representative[:is_authorised_representative]}
                   label={dgettext("patient_form", "Authorised representative")}
                 />
                 <.input
@@ -318,7 +318,7 @@ defmodule ComposeWeb.PatientFormLive do
                 />
                 <.input
                   type="checkbox"
-                  field={authorised_representative[:general_power_of_attorney]}
+                  field={authorised_representative[:has_general_power_of_attorney]}
                   label={dgettext("patient_form", "General power of attorney")}
                 />
                 <.input
@@ -399,7 +399,7 @@ defmodule ComposeWeb.PatientFormLive do
                 />
                 <.input
                   type="checkbox"
-                  field={relocation_to[:home]}
+                  field={relocation_to[:is_home]}
                   label={dgettext("patient_form", "Home")}
                 />
                 <.input
@@ -512,7 +512,7 @@ defmodule ComposeWeb.PatientFormLive do
               <div class="flex flex-col gap-2">
                 <.input
                   type="checkbox"
-                  field={allergies[:allergy_pass]}
+                  field={allergies[:has_allergy_pass]}
                   label={dgettext("patient_form", "Allergy pass")}
                 />
                 <.input type="text" field={allergies[:kind]} label={dgettext("patient_form", "Kind")} />
@@ -648,7 +648,7 @@ defmodule ComposeWeb.PatientFormLive do
                 />
                 <.input
                   type="checkbox"
-                  field={skin_condition[:ulcer]}
+                  field={skin_condition[:has_ulcer]}
                   label={dgettext("patient_form", "Ulcer")}
                 />
                 <.input
@@ -663,7 +663,7 @@ defmodule ComposeWeb.PatientFormLive do
                 />
                 <.input
                   type="checkbox"
-                  field={skin_condition[:fungal_infection]}
+                  field={skin_condition[:has_fungal_infection]}
                   label={dgettext("patient_form", "Fungal infection")}
                 />
                 <.input
@@ -673,7 +673,7 @@ defmodule ComposeWeb.PatientFormLive do
                 />
                 <.input
                   type="checkbox"
-                  field={skin_condition[:wound_documentation]}
+                  field={skin_condition[:has_wound_documentation]}
                   label={dgettext("patient_form", "Wound documentation")}
                 />
               </div>
@@ -686,29 +686,29 @@ defmodule ComposeWeb.PatientFormLive do
               <div class="flex flex-col gap-2">
                 <.input
                   type="checkbox"
-                  field={special_care[:severe_spasticity]}
+                  field={special_care[:has_severe_spasticity]}
                   label={dgettext("patient_form", "Severe Spasticity")}
                 />
                 <.input
                   type="checkbox"
-                  field={special_care[:hemiplegia_and_paresis]}
+                  field={special_care[:has_hemiplegia_and_paresis]}
                   label={dgettext("patient_form", "Hemiplegia and Paresis")}
                 />
                 <.input
                   type="checkbox"
-                  field={special_care[:malposition_of_the_extremity]}
+                  field={special_care[:has_malposition_of_the_extremity]}
                   label={dgettext("patient_form", "Malposition of the extremity")}
                 />
                 <.input
                   type="checkbox"
-                  field={special_care[:limited_resilience_due_to_cardiovascular_diseases]}
+                  field={special_care[:has_limited_resilience_due_to_cardiovascular_diseases]}
                   label={
                     dgettext("patient_form", "Limited resilience due to cardiovascular diseases")
                   }
                 />
                 <.input
                   type="checkbox"
-                  field={special_care[:behavioral_problems_with_mental_illness_and_dementia]}
+                  field={special_care[:has_behavioral_problems_with_mental_illness_and_dementia]}
                   label={
                     dgettext(
                       "patient_form",
@@ -718,22 +718,22 @@ defmodule ComposeWeb.PatientFormLive do
                 />
                 <.input
                   type="checkbox"
-                  field={special_care[:impaired_sensory_perception]}
+                  field={special_care[:has_impaired_sensory_perception]}
                   label={dgettext("patient_form", "Impaired sensory perception")}
                 />
                 <.input
                   type="checkbox"
-                  field={special_care[:therapy_resistant_pain]}
+                  field={special_care[:has_therapy_resistant_pain]}
                   label={dgettext("patient_form", "Therapy-resistant pain")}
                 />
                 <.input
                   type="checkbox"
-                  field={special_care[:increased_need_for_care_due_to_body_weight]}
+                  field={special_care[:has_increased_need_for_care_due_to_body_weight]}
                   label={dgettext("patient_form", "Increased need for care due to body weight")}
                 />
                 <.input
                   type="checkbox"
-                  field={special_care[:weight_bmi]}
+                  field={special_care[:has_weight_bmi_issues]}
                   label={dgettext("patient_form", "Weight/BMI")}
                 />
               </div>
@@ -804,7 +804,7 @@ defmodule ComposeWeb.PatientFormLive do
               <div class="flex flex-col gap-4">
                 <.input
                   type="checkbox"
-                  field={rest_and_sleep[:falling_asleep]}
+                  field={rest_and_sleep[:can_fall_asleep]}
                   label={dgettext("patient_form", "Falling asleep")}
                 />
                 <.input
@@ -837,17 +837,17 @@ defmodule ComposeWeb.PatientFormLive do
               <div class="flex flex-col gap-4">
                 <.input
                   type="checkbox"
-                  field={breathing[:sounds]}
+                  field={breathing[:make_sounds]}
                   label={dgettext("patient_form", "Breathing sounds")}
                 />
                 <.input
                   type="checkbox"
-                  field={breathing[:sputum]}
+                  field={breathing[:has_sputum]}
                   label={dgettext("patient_form", "Sputum")}
                 />
                 <.input
                   type="checkbox"
-                  field={breathing[:tracheostomy]}
+                  field={breathing[:has_tracheostomy]}
                   label={dgettext("patient_form", "Tracheostomy")}
                 />
                 <.input
@@ -867,42 +867,42 @@ defmodule ComposeWeb.PatientFormLive do
               <div class="flex flex-col gap-4">
                 <.input
                   type="checkbox"
-                  field={communication[:speaking]}
+                  field={communication[:can_speak]}
                   label={dgettext("patient_form", "Speaking")}
                 />
                 <.input
                   type="checkbox"
-                  field={communication[:reading]}
+                  field={communication[:can_read]}
                   label={dgettext("patient_form", "Reading")}
                 />
                 <.input
                   type="checkbox"
-                  field={communication[:understanding]}
+                  field={communication[:can_understand]}
                   label={dgettext("patient_form", "Understanding")}
                 />
                 <.input
                   type="checkbox"
-                  field={communication[:writing]}
+                  field={communication[:can_write]}
                   label={dgettext("patient_form", "Writing")}
                 />
                 <.input
                   type="checkbox"
-                  field={communication[:blindness]}
+                  field={communication[:has_blindness]}
                   label={dgettext("patient_form", "Blindness")}
                 />
                 <.input
                   type="checkbox"
-                  field={communication[:hearing_impairment]}
+                  field={communication[:has_hearing_impairment]}
                   label={dgettext("patient_form", "Hearing impairment")}
                 />
                 <.input
                   type="checkbox"
-                  field={communication[:confusion]}
+                  field={communication[:is_confused]}
                   label={dgettext("patient_form", "Confusion")}
                 />
                 <.input
                   type="checkbox"
-                  field={communication[:glasses]}
+                  field={communication[:has_glasses]}
                   label={dgettext("patient_form", "Glasses")}
                 />
                 <.input
@@ -946,37 +946,37 @@ defmodule ComposeWeb.PatientFormLive do
                 />
                 <.input
                   type="checkbox"
-                  field={eating_and_drinking[:upper_dentures]}
+                  field={eating_and_drinking[:has_upper_dentures]}
                   label={dgettext("patient_form", "Upper dentures")}
                 />
                 <.input
                   type="checkbox"
-                  field={eating_and_drinking[:lower_dentures]}
+                  field={eating_and_drinking[:has_lower_dentures]}
                   label={dgettext("patient_form", "Lower dentures")}
                 />
                 <.input
                   type="checkbox"
-                  field={eating_and_drinking[:chewing_problems]}
+                  field={eating_and_drinking[:has_chewing_problems]}
                   label={dgettext("patient_form", "Chewing problems")}
                 />
                 <.input
                   type="checkbox"
-                  field={eating_and_drinking[:swallowing_problems]}
+                  field={eating_and_drinking[:has_swallowing_problems]}
                   label={dgettext("patient_form", "Swallowing problems")}
                 />
                 <.input
                   type="checkbox"
-                  field={eating_and_drinking[:mouth_pain]}
+                  field={eating_and_drinking[:has_mouth_pain]}
                   label={dgettext("patient_form", "Mouth pain")}
                 />
                 <.input
                   type="checkbox"
-                  field={eating_and_drinking[:thirst_restricted]}
+                  field={eating_and_drinking[:has_thirst_restricted]}
                   label={dgettext("patient_form", "Thirst restricted")}
                 />
                 <.input
                   type="checkbox"
-                  field={eating_and_drinking[:appetite_restricted]}
+                  field={eating_and_drinking[:has_appetite_restricted]}
                   label={dgettext("patient_form", "Appetite restricted")}
                 />
                 <.input
@@ -1016,27 +1016,27 @@ defmodule ComposeWeb.PatientFormLive do
                 />
                 <.input
                   type="checkbox"
-                  field={eating_and_drinking[:administration_per_injection]}
+                  field={eating_and_drinking[:has_administration_per_injection]}
                   label={dgettext("patient_form", "Administration per injection")}
                 />
                 <.input
                   type="checkbox"
-                  field={eating_and_drinking[:administration_per_pump]}
+                  field={eating_and_drinking[:has_administration_per_pump]}
                   label={dgettext("patient_form", "Administration per pump")}
                 />
                 <.input
                   type="checkbox"
-                  field={eating_and_drinking[:administration_per_gravity]}
+                  field={eating_and_drinking[:has_administration_per_gravity]}
                   label={dgettext("patient_form", "Administration per gravity")}
                 />
                 <.input
                   type="checkbox"
-                  field={eating_and_drinking[:meals_on_wheels]}
+                  field={eating_and_drinking[:has_meals_on_wheels]}
                   label={dgettext("patient_form", "Meals on wheels")}
                 />
                 <.input
                   type="checkbox"
-                  field={eating_and_drinking[:informed]}
+                  field={eating_and_drinking[:is_informed]}
                   label={dgettext("patient_form", "Informed")}
                 />
                 <.input
@@ -1149,7 +1149,7 @@ defmodule ComposeWeb.PatientFormLive do
                 />
                 <.input
                   type="checkbox"
-                  field={psychological_situation[:daily_structure]}
+                  field={psychological_situation[:has_daily_structure]}
                   label={dgettext("patient_form", "Daily structure")}
                 />
                 <.input
@@ -1159,22 +1159,22 @@ defmodule ComposeWeb.PatientFormLive do
                 />
                 <.input
                   type="checkbox"
-                  field={psychological_situation[:hyper_mobility]}
+                  field={psychological_situation[:is_hyper_mobile]}
                   label={dgettext("patient_form", "Hyper mobility")}
                 />
                 <.input
                   type="checkbox"
-                  field={psychological_situation[:restlesness]}
+                  field={psychological_situation[:is_restless]}
                   label={dgettext("patient_form", "Restlesness")}
                 />
                 <.input
                   type="checkbox"
-                  field={psychological_situation[:fear]}
+                  field={psychological_situation[:has_fear]}
                   label={dgettext("patient_form", "Fear")}
                 />
                 <.input
                   type="checkbox"
-                  field={psychological_situation[:depressive_mood]}
+                  field={psychological_situation[:has_depressive_mood]}
                   label={dgettext("patient_form", "Depressive mood")}
                 />
                 <.input
@@ -1211,17 +1211,17 @@ defmodule ComposeWeb.PatientFormLive do
               <div class="flex flex-col gap-4">
                 <.input
                   type="checkbox"
-                  field={occupy_one_self[:reading]}
+                  field={occupy_one_self[:can_read]}
                   label={dgettext("patient_form", "Reading")}
                 />
                 <.input
                   type="checkbox"
-                  field={occupy_one_self[:radio]}
+                  field={occupy_one_self[:uses_radio]}
                   label={dgettext("patient_form", "Radio")}
                 />
                 <.input
                   type="checkbox"
-                  field={occupy_one_self[:tv]}
+                  field={occupy_one_self[:uses_tv]}
                   label={dgettext("patient_form", "TV")}
                 />
                 <.input
@@ -1319,7 +1319,7 @@ defmodule ComposeWeb.PatientFormLive do
                 />
                 <.input
                   type="checkbox"
-                  field={excretion[:continence_training]}
+                  field={excretion[:has_continence_training]}
                   label={dgettext("patient_form", "Continence training")}
                 />
                 <.input type="text" field={excretion[:note]} label={dgettext("patient_form", "Note")} />
@@ -1333,22 +1333,22 @@ defmodule ComposeWeb.PatientFormLive do
               <div class="flex flex-col gap-4">
                 <.input
                   type="checkbox"
-                  field={attachment[:medication_plan]}
+                  field={attachment[:has_medication_plan]}
                   label={dgettext("patient_form", "Medication plan")}
                 />
                 <.input
                   type="checkbox"
-                  field={attachment[:carer_id_card]}
+                  field={attachment[:has_carer_id_card]}
                   label={dgettext("patient_form", "Carer ID card")}
                 />
                 <.input
                   type="checkbox"
-                  field={attachment[:wound_documentation]}
+                  field={attachment[:has_wound_documentation]}
                   label={dgettext("patient_form", "Wound documentation")}
                 />
                 <.input
                   type="checkbox"
-                  field={attachment[:living_will]}
+                  field={attachment[:has_living_will]}
                   label={dgettext("patient_form", "Living will")}
                 />
                 <.input

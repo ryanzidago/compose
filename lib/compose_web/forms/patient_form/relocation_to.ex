@@ -10,7 +10,7 @@ defmodule ComposeWeb.PatientForm.RelocationTo do
     # Verlegung nach
     field :address, :string
     # Hause
-    field :home, :boolean
+    field :is_home, :boolean
     # Kontaktperson
     field :contact_person, :string
     # Telefonnummer

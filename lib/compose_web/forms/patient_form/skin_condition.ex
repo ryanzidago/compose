@@ -14,19 +14,19 @@ defmodule ComposeWeb.PatientForm.SkinCondition do
     # Dekubitus (Größe)
     field :decubitus_size, :string
     # Ulcus
-    field :ulcer, :boolean
+    field :has_ulcer, :boolean
     # Ulcus (Größe)
     field :ulcer_size, :string
     # Lokalisation
     field :ulcer_location, :string
 
     # Pilzinfektion
-    field :fungal_infection, :boolean
+    field :has_fungal_infection, :boolean
     # Lokalisation
     field :fungal_infection_location, :string
 
     # Anlage: Wunddokumentation
-    field :wound_documentation, :boolean
+    field :has_wound_documentation, :boolean
   end
 
   def changeset(%__MODULE__{} = skin_condition, attrs) do

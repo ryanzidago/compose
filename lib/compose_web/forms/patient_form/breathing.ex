@@ -9,13 +9,13 @@ defmodule ComposeWeb.PatientForm.Breathing do
   @primary_key false
   embedded_schema do
     # Atemgeräusche
-    field :sounds, :boolean
+    field :make_sounds, :boolean
     # Auswurf
-    field :sputum, :boolean
+    field :has_sputum, :boolean
     # O2-Gerät
-    field :oxigen_device, :boolean
+    field :has_oxigen_device, :boolean
     # Tracheostoma
-    field :tracheostomy, :boolean
+    field :has_tracheostomy, :boolean
     # Letzter Wechsel der Kanüle am
     field :last_cannula_change_at, :utc_datetime
 

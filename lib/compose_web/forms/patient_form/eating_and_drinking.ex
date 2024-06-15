@@ -14,18 +14,18 @@ defmodule ComposeWeb.PatientForm.EatingAndDrinking do
     # Hilfe beim Trinken
     field :help_with_drinking, Ecto.Enum, values: values()
     # Zahnprothese(n)
-    field :upper_dentures, :boolean
-    field :lower_dentures, :boolean
+    field :has_upper_dentures, :boolean
+    field :has_lower_dentures, :boolean
     # Kauprobleme
-    field :chewing_problems, :boolean
+    field :has_chewing_problems, :boolean
     # Schluckprobleme
-    field :swallowing_problems, :boolean
+    field :has_swallowing_problems, :boolean
     # Schmerzen im Mund
-    field :mouth_pain, :boolean
+    field :has_mouth_pain, :boolean
     # Durstgefühl eingeschränkt
-    field :thirst_restricted, :boolean
+    field :has_thirst_restricted, :boolean
     # Appetit eingeschränkt
-    field :appetite_restricted, :boolean
+    field :has_appetite_restricted, :boolean
     # Empfohlene Trinkmenge (ml/Tag)
     field :recommended_drinking_amount_in_ml_per_day, :integer
     # Sondentyp
@@ -41,13 +41,13 @@ defmodule ComposeWeb.PatientForm.EatingAndDrinking do
     # Tee (menge in ml)
     field :transnasal_feeding_tube_amount_in_ml, :integer
     # Verabreichung
-    field :administration_per_injection, :boolean
-    field :administration_per_pump, :boolean
-    field :administration_per_gravity, :boolean
+    field :has_administration_per_injection, :boolean
+    field :has_administration_per_pump, :boolean
+    field :has_administration_per_gravity, :boolean
     # Essen auf Rädern
-    field :meals_on_wheels, :boolean
+    field :has_meals_on_wheels, :boolean
     # Informiert
-    field :informed, :boolean
+    field :is_informed, :boolean
     # Bemerkungen (z.B. Diät, Vorlieben und Abneigungen, Essen auf Rädern)
     field :note, :string
   end

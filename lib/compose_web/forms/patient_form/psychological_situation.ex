@@ -12,18 +12,18 @@ defmodule ComposeWeb.PatientForm.PsychologicalSituation do
     # Bewustseinslage
     field :consciousness_state, Ecto.Enum, values: [:awake, :sleepy]
     # Taggesstruktur
-    field :daily_structure, :boolean
+    field :has_daily_structure, :boolean
     # psychische Veränderungen
     field :psychological_changes, :string
     # Motviation und Antrbieb
     # Hypermobilität
-    field :hyper_mobility, :boolean
+    field :is_hyper_mobile, :boolean
     # Unruhezustände
-    field :restlesness, :boolean
+    field :is_restless, :boolean
     # Ängste
-    field :fear, :boolean
+    field :has_fear, :boolean
     # depressive Verstimmung
-    field :depressive_mood, :boolean
+    field :has_depressive_mood, :boolean
     # Ablehnen von Hilfe
     field :refuses_help, :boolean
 

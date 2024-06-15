@@ -10,9 +10,9 @@ defmodule ComposeWeb.PatientForm.Representative do
     # Angehöriger Verwandtshaftsgrad
     field :degree_of_relationship, :string
     # Vertrauensperson
-    field :representative, :boolean
+    field :is_representative, :boolean
     # Informiert?
-    field :informed, :boolean
+    field :is_informed, :boolean
     field :first_name, :string
     field :last_name, :string
     field :phone_number, :string

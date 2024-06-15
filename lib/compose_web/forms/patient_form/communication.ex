@@ -10,22 +10,22 @@ defmodule ComposeWeb.PatientForm.Communication do
   @primary_key false
   embedded_schema do
     # Sprechen
-    field :speaking, :boolean
+    field :can_speak, :boolean
     # Lesen
-    field :reading, :boolean
+    field :can_read, :boolean
     # Verstehen
-    field :understanding, :boolean
+    field :can_understand, :boolean
     # Schreiben
-    field :writing, :boolean
+    field :can_write, :boolean
 
     # Blindheit
-    field :blindness, :boolean
+    field :has_blindness, :boolean
     # Schwerhörigkeit
-    field :hearing_impairment, :boolean
+    field :has_hearing_impairment, :boolean
     # Verwirrtheit
-    field :confusion, :boolean
+    field :is_confused, :boolean
     # Brille
-    field :glasses, :boolean
+    field :has_glasses, :boolean
     # Hörgerät
     field :hearing_aid, Ecto.Enum, values: [:left, :right]
     # Bemerkungen

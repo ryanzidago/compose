@@ -10,12 +10,14 @@ defmodule ComposeWeb.PatientForm.ActualMedication do
     # siehe Anlage / Entlassungsschein
     field :see_attachment_or_discharge_note, :boolean
 
+    @primary_key false
     embeds_many :medications, Medication do
       field :name, :string
       field :time, :string
     end
 
     # Bedarfsmedikation
+    @primary_key false
     embeds_many :medications_as_needed, MedicationAsNeeded do
       field :name, :string
       field :time, :string
@@ -24,7 +26,7 @@ defmodule ComposeWeb.PatientForm.ActualMedication do
     field :last_medication, Ecto.Enum, values: [:morning, :noon, :evening, :night]
     field :time, :utc_datetime
     # letztes BTM-Pflaster
-    field :last_btm_patch, :utc_datetime
+    field :last_btm_patch_at, :utc_datetime
   end
 
   def changeset(%__MODULE__{} = actual_medication, attrs) do

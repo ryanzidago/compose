@@ -8,7 +8,7 @@ defmodule ComposeWeb.PatientForm.Allergies do
   @primary_key false
   embedded_schema do
     # Allergiepaß
-    field :allergy_pass, :boolean
+    field :has_allergy_pass, :boolean
 
     # Allergien
     field :kind, :string

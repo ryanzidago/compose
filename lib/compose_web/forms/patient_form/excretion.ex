@@ -32,7 +32,7 @@ defmodule ComposeWeb.PatientForm.Excretion do
     # Ableitungssystem gelegt am
     field :discharge_system_placed_at, :utc_datetime
     # Kontinenztraining
-    field :continence_training, :boolean
+    field :has_continence_training, :boolean
     field :note, :string
   end
 

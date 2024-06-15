@@ -10,7 +10,7 @@ defmodule ComposeWeb.PatientForm.RestAndSleep do
   @primary_key false
   embedded_schema do
     # Einsachlafen
-    field :falling_asleep, :boolean
+    field :can_fall_asleep, :boolean
     # Durschlafstörungen
     field :sleep_disruptions, Ecto.Enum, values: values()
     # Schlafumkehr

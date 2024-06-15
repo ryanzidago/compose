@@ -100,6 +100,7 @@ defmodule ComposeWeb.PatientForm do
     end)
   end
 
+  # (Ryan) the schema isn't correct for `embeds_many` fields.
   defp type(module, field) do
     # (Ryan) does not work for virtual fields
     case module.__schema__(:type, field) do

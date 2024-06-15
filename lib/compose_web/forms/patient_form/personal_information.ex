@@ -16,11 +16,11 @@ defmodule ComposeWeb.PatientForm.PersonalInformation do
     # Personalausweis
     field :id_card, :boolean
     # Zusatzversicherung
-    field :additional_insurance, :boolean
+    field :has_additional_insurance, :boolean
     # krankenversichertenkarte
-    field :health_insurance_card, :boolean
+    field :has_health_insurance_card, :boolean
     # Zuzahlungsbefreiung
-    field :exmption_from_co_payment, :boolean
+    field :is_exempt_from_co_payment, :boolean
     # Religion
     field :religion, :string
     # Muttersprache
