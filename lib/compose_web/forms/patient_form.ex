@@ -100,15 +100,17 @@ defmodule ComposeWeb.PatientForm do
     end)
   end
 
-  # (Ryan) the schema isn't correct for `embeds_many` fields.
   defp type(module, field) do
     # (Ryan) does not work for virtual fields
     case module.__schema__(:type, field) do
       {:parameterized, Ecto.Enum, %{mappings: mappings}} ->
         Keyword.keys(mappings)
 
-      {:parameterized, Ecto.Embedded, %{related: related}} ->
+      {:parameterized, Ecto.Embedded, %{cardinality: :one, related: related}} ->
         schema(related)
+
+      {:parameterized, Ecto.Embedded, %{cardinality: :many, related: related}} ->
+        [schema(related)]
 
       type ->
         type

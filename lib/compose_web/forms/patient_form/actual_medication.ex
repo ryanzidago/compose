@@ -10,15 +10,13 @@ defmodule ComposeWeb.PatientForm.ActualMedication do
     # siehe Anlage / Entlassungsschein
     field :see_attachment_or_discharge_note, :boolean
 
-    @primary_key false
-    embeds_many :medications, Medication do
+    embeds_many :medications, Medication, primary_key: false do
       field :name, :string
       field :time, :string
     end
 
     # Bedarfsmedikation
-    @primary_key false
-    embeds_many :medications_as_needed, MedicationAsNeeded do
+    embeds_many :medications_as_needed, MedicationAsNeeded, primary_key: false do
       field :name, :string
       field :time, :string
     end
