@@ -1,0 +1,307 @@
+{
+  "actual_medication": {
+    "last_btm_patch_at": "2024-06-10T00:00:00Z",
+    "last_medication": [
+      "morning"
+    ],
+    "medications": [
+      {
+        "name": "Lisinopril",
+        "time": "morning"
+      },
+      {
+        "name": "Metformin",
+        "time": "evening"
+      }
+    ],
+    "medications_as_needed": [
+      {
+        "name": "Ibuprofen",
+        "time": ""
+      }
+    ],
+    "see_attachment_or_discharge_note": true,
+    "time": "2024-06-15T08:00:00Z"
+  },
+  "allergies": {
+    "has_allergy_pass": true,
+    "kind": "penicillin"
+  },
+  "attachment": {
+    "has_carer_id_card": true,
+    "has_living_will": true,
+    "has_medication_plan": true,
+    "has_wound_documentation": true,
+    "note": "",
+    "other": "",
+    "telephone_enquiry_at": "2024-06-14T09:00:00Z"
+  },
+  "authorised_representative": {
+    "email": "jane.doe@example.com",
+    "fax_number": "123-456-7890",
+    "first_name": "Jane",
+    "has_general_power_of_attorney": true,
+    "is_authorised_representative": true,
+    "is_legal_guardian": false,
+    "last_name": "Doe",
+    "living_will_exists": true,
+    "other_value_items": "",
+    "social_service_involved": true,
+    "social_service_name": "Springfield Social Services",
+    "social_service_phone_number": "123-555-7890",
+    "valuable_items": [
+      "jewelry",
+      "apartment key"
+    ]
+  },
+  "body_care": {
+    "bathing_and_showering": [
+      "support"
+    ],
+    "hair_care": [
+      "support"
+    ],
+    "intimate_care": [
+      "support"
+    ],
+    "lower_body": [
+      "support"
+    ],
+    "lower_body_dressing_and_undressing": [
+      "support"
+    ],
+    "nail_care": [
+      "supervision"
+    ],
+    "note": "",
+    "oral_care": [
+      "instruction"
+    ],
+    "shaving": [
+      "support"
+    ],
+    "upper_body": [
+      "support"
+    ],
+    "upper_body_dressing_and_undressing": [
+      "support"
+    ]
+  },
+  "breathing": {
+    "has_oxigen_device": true,
+    "has_sputum": false,
+    "has_tracheostomy": false,
+    "last_cannula_change_at": "2024-06-12T00:00:00Z",
+    "make_sounds": true,
+    "note": "respiratory issues, presence of breathing sounds"
+  },
+  "care_relevant_pre_existing_conditions": {
+    "infections": "",
+    "last_hospital_stay_location": "Springfield General Hospital",
+    "text": "diabetes, hypertension"
+  },
+  "communication": {
+    "can_read": true,
+    "can_speak": true,
+    "can_understand": true,
+    "can_write": true,
+    "has_blindness": false,
+    "has_glasses": true,
+    "has_hearing_impairment": true,
+    "hearing_aid": [
+      "right"
+    ],
+    "is_confused": false,
+    "note": ""
+  },
+  "eating_and_drinking": {
+    "has_administration_per_gravity": false,
+    "has_administration_per_injection": false,
+    "has_administration_per_pump": false,
+    "has_appetite_restricted": false,
+    "has_chewing_problems": false,
+    "has_lower_dentures": false,
+    "has_meals_on_wheels": false,
+    "has_mouth_pain": false,
+    "has_swallowing_problems": false,
+    "has_thirst_restricted": false,
+    "has_upper_dentures": true,
+    "help_with_drinking": [
+      "support"
+    ],
+    "help_with_eating": [
+      "support"
+    ],
+    "is_informed": true,
+    "note": "",
+    "recommended_drinking_amount_in_ml_per_day": 2000,
+    "transnasal_feeding_tube": false,
+    "transnasal_feeding_tube_amount_in_ml": 0,
+    "tube_inserted_at": "",
+    "tube_nutrition": "",
+    "tube_nutrition_amount_in_ml": 0,
+    "tube_type": ""
+  },
+  "excretion": {
+    "adjusting_clothing": [
+      "support"
+    ],
+    "bowel_movement": [
+      "normal"
+    ],
+    "discharge_system_placed_at": "",
+    "fecal_incontinence": [
+      "sometimes"
+    ],
+    "has_continence_training": false,
+    "hygenic_aftercare": [
+      "support"
+    ],
+    "indwelling_catheter_charriere_number": 0,
+    "last_bowel_movement_at": "2024-06-14T07:00:00Z",
+    "note": "",
+    "stoma": [
+      "care_by_stoma_therapists"
+    ],
+    "supply_items": [
+      "suprapubic_catheter",
+      "indwelling_catheter"
+    ],
+    "urinary_incontinence": [
+      "sometimes"
+    ]
+  },
+  "existing_or_prescribed_medical_aid": {
+    "text": ""
+  },
+  "gender_identity": {
+    "note": ""
+  },
+  "mobility": {
+    "aids": "wheelchair, walker",
+    "laying": [
+      "support"
+    ],
+    "moving_in_bed": [
+      "support"
+    ],
+    "note": "",
+    "sitting": [
+      "support"
+    ],
+    "sitting_down": [
+      "support"
+    ],
+    "standing": [
+      "support"
+    ],
+    "walking": [
+      "support"
+    ]
+  },
+  "occupy_one_self": {
+    "can_read": true,
+    "note": "",
+    "uses_radio": true,
+    "uses_tv": true
+  },
+  "personal_information": {
+    "address": "1234 Elm Street, Springfield, IL",
+    "birth_date": "1950-01-15",
+    "care_level_approved": "2",
+    "care_level_requested_at": "2024-06-01T00:00:00Z",
+    "first_name": "John",
+    "has_additional_insurance": false,
+    "has_health_insurance_card": true,
+    "id_card": true,
+    "is_exempt_from_co_payment": false,
+    "last_name": "Doe",
+    "mother_tongue": "English",
+    "paragraph_37_section_1_approved_until": null,
+    "paragraph_37_section_2_approved_until": null,
+    "paragraph_37b_approved_until": null,
+    "paragraph_42_approved_until": null,
+    "religion": "Christianity"
+  },
+  "psychological_situation": {
+    "consciousness_state": [
+      "awake"
+    ],
+    "disorientation": [
+      "temporal"
+    ],
+    "has_daily_structure": true,
+    "has_depressive_mood": false,
+    "has_fear": false,
+    "is_hyper_mobile": false,
+    "is_restless": false,
+    "note": "",
+    "oriented": [
+      "yes"
+    ],
+    "psychological_changes": "",
+    "refuses_help": false
+  },
+  "relocation_from": {
+    "address": "Springfield Rehabilitation Center",
+    "contact_person": "",
+    "fax": "",
+    "phone_number": ""
+  },
+  "relocation_to": {
+    "address": "1234 Elm Street, Springfield, IL",
+    "contact_person": "Jane Doe",
+    "fax": "",
+    "is_home": true,
+    "phone_name": ""
+  },
+  "representative": {
+    "degree_of_relationship": "daughter",
+    "first_name": "Jane",
+    "is_informed": true,
+    "is_representative": true,
+    "last_name": "Doe",
+    "mobile_number": "",
+    "mobile_number_type": [],
+    "phone_number": "",
+    "phone_number_type": []
+  },
+  "rest_and_sleep": {
+    "can_fall_asleep": true,
+    "note": "occasionally disrupted",
+    "sleep_disruptions": [
+      "support"
+    ],
+    "sleep_reversal": []
+  },
+  "skin_condition": {
+    "decubitus_degree": 2,
+    "decubitus_size": "2 cm by 3 cm",
+    "fungal_infection_location": "",
+    "has_fungal_infection": false,
+    "has_ulcer": false,
+    "has_wound_documentation": true,
+    "text": "wound on left leg under treatment",
+    "ulcer_location": "",
+    "ulcer_size": ""
+  },
+  "special_care": {
+    "has_behavioral_problems_with_mental_illness_and_dementia": false,
+    "has_hemiplegia_and_paresis": false,
+    "has_impaired_sensory_perception": false,
+    "has_increased_need_for_care_due_to_body_weight": false,
+    "has_limited_resilience_due_to_cardiovascular_diseases": true,
+    "has_malposition_of_the_extremity": false,
+    "has_severe_spasticity": false,
+    "has_therapy_resistant_pain": false,
+    "has_weight_bmi_issues": true
+  },
+  "treating_doctor": {
+    "fax": "123-555-7896",
+    "name": "Dr. William Hart",
+    "phone_number": "123-555-7895"
+  },
+  "treatment_care_instructions": {
+    "text": "continue wound care, monitor blood pressure and glucose levels daily, administer medications as prescribed, provide support with personal hygiene and mobility, ensure hydration and regular eating"
+  }
+}

@@ -6,6 +6,8 @@ defmodule ComposeWeb.PatientFormLive do
 
   require Logger
 
+  @sample_response Compose.LLM.sample_response()
+
   @impl LiveView
   def mount(%{"locale" => locale}, _session, socket) do
     Gettext.put_locale(locale)
@@ -13,9 +15,9 @@ defmodule ComposeWeb.PatientFormLive do
     socket =
       socket
       |> assign_async(:changeset, fn ->
-        {:ok, %{changeset: PatientForm.changeset(%{})}}
+        {:ok, %{changeset: PatientForm.changeset(@sample_response)}}
       end)
-      |> assign_async(:response, fn -> {:ok, %{response: nil}} end)
+      |> assign_async(:response, fn -> {:ok, %{response: @sample_response}} end)
       |> assign_async(:error, fn -> {:ok, %{error: nil}} end)
       |> assign(patient_report: nil)
       |> assign_backend_config()
@@ -343,13 +345,18 @@ defmodule ComposeWeb.PatientFormLive do
                 />
                 <.input
                   type="select"
+                  multiple={true}
                   field={authorised_representative[:valuable_items]}
                   label={dgettext("patient_form", "Valuable items")}
-                  prompt={dgettext("patient_form", "Select an option")}
                   options={
-                    Ecto.Enum.mappings(
-                      ComposeWeb.PatientForm.AuthorisedRepresentative,
-                      :valuable_items
+                    Enum.map(
+                      ComposeWeb.PatientForm.AuthorisedRepresentative.valuable_items(),
+                      fn
+                        :jewelry -> {:jewelry, dgettext("patient_form", "Jewelry")}
+                        :money -> {:money, dgettext("patient_form", "Money")}
+                        :apartment_key -> {:appartment_key, dgettext("patient_form", "Apartment key")}
+                        :other -> {:other, dgettext("patient_form", "Other")}
+                      end
                     )
                   }
                 />

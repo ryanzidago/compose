@@ -3,6 +3,9 @@ defmodule ComposeWeb.PatientForm.AuthorisedRepresentative do
 
   import ComposeWeb.PatientForm.Prompt, only: [base_prompt: 0]
   import Ecto.Changeset
+  import ComposeWeb.Gettext
+
+  @valuable_items [:jewelry, :money, :apartment_key, :other]
 
   @derive Jason.Encoder
   @primary_key false
@@ -23,12 +26,15 @@ defmodule ComposeWeb.PatientForm.AuthorisedRepresentative do
     field :social_service_involved, :boolean
     field :social_service_name, :string
     field :social_service_phone_number, :string
-    field :valuable_items, Ecto.Enum, values: [:jewelry, :money, :apartment_key, :other]
+    field :valuable_items, {:array, :string}
     field :other_value_items, :string
   end
 
   def changeset(%__MODULE__{} = representative, attrs) do
     representative
     |> cast(attrs, __MODULE__.__schema__(:fields))
+    |> validate_subset(:valuable_items, Enum.map(valuable_items(), &Atom.to_string/1))
   end
+
+  def valuable_items, do: @valuable_items
 end

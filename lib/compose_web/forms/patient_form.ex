@@ -61,7 +61,7 @@ defmodule ComposeWeb.PatientForm do
     changeset(%__MODULE__{}, attrs)
   end
 
-  def changeset(%__MODULE__{} = patient_form, attrs) do
+  def changeset(%__MODULE__{} = patient_form, %{} = attrs) do
     patient_form
     |> cast(attrs, __MODULE__.__schema__(:fields) -- __MODULE__.__schema__(:embeds))
     |> cast_embed(:personal_information, with: &PersonalInformation.changeset/2)
@@ -111,6 +111,9 @@ defmodule ComposeWeb.PatientForm do
 
       {:parameterized, Ecto.Embedded, %{cardinality: :many, related: related}} ->
         [schema(related)]
+
+      {:array, :string} ->
+        [:string]
 
       type ->
         type

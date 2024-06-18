@@ -1,6 +1,7 @@
 defmodule ComposeWeb.PatientForm.Prompt do
   def base_prompt do
     """
+    # Instructions
     You help nurses fill out forms.
 
     You will receive a JSON object containing three keys:
@@ -16,7 +17,7 @@ defmodule ComposeWeb.PatientForm.Prompt do
       - `""` for `string` fields.
       - `null` for `enum` fields.
     4) Only reply with a single value for any enum fields, unless those fiels contains map.
-      For example if the field accepts `["female", "male"]`, you should reply with `"female"` or "male"`.
+      For example if the field accepts `["female", "male"]`, you should reply with either `"female"` or "male"`.
       But if you receive `[{"name": "string", "time": "utc_datetime"}]`, then you must reply with `[{"name": <some name>, "time": <some datetime>}]`.
     """
   end

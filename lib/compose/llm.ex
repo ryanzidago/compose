@@ -139,6 +139,56 @@ defmodule Compose.LLM do
     end
   end
 
-  def parse(%{} = response), do: {:ok, response}
+  def parse(%{} = response) do
+    response =
+      response
+      |> parse_enums()
+      |> parse_arrays()
+
+    {:ok, response}
+  end
+
   def parse(response), do: {:error, "Not a map: #{inspect(response)}"}
+
+  def parse_enums(map) when is_map(map) do
+    Enum.into(map, %{}, fn
+      {key, value} ->
+        value = parse_enums(value)
+        {key, value}
+    end)
+  end
+
+  # TODO(Ryan): the LLM struggles to return a single value for enum fields.
+  # This is a workaround that case; but it doesn't support Ecto schemas with lists.
+  #
+  # embeds_many
+  def parse_enums([value | _rest] = values) when is_map(value), do: values
+  # Ecto.Enum
+  def parse_enums([value]), do: value
+  # Empty Ecto.Enum
+  def parse_enums([]), do: nil
+  def parse_enums(value), do: value
+
+  def parse_arrays(%{} = map) when is_map(map) do
+    Enum.into(map, %{}, fn {key, value} ->
+      value = parse_arrays(value)
+      {key, value}
+    end)
+  end
+
+  def parse_arrays([value | _rest] = values) when is_binary(value) do
+    Enum.map(values, &String.replace(&1, " ", "_"))
+  end
+
+  def parse_arrays(value), do: value
+
+  def sample_response do
+    {:ok, response} =
+      "example_response.json"
+      |> File.read!()
+      |> Jason.decode!()
+      |> Compose.LLM.parse()
+
+    response
+  end
 end
